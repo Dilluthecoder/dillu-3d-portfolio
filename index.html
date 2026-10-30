@@ -1,0 +1,2544 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dillu Kumar Chaubey | 3D Developer Portfolio</title>
+  <meta name="description" content="Portfolio of Dillu Kumar Chaubey - Aspiring Software Engineer, B.Tech CSE (IoT) Student, MERN Stack Developer, and AI/ML explorer.">
+  <meta name="keywords" content="Dillu Chaubey, dilluthecoder, Full-Stack Developer, MERN, AI, ML, C++, DSA, IoT, Government Engineering College Madhubani">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+  
+  <!-- Google Fonts: Inter & Space Grotesk -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            heading: ['Space Grotesk', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              dark: '#030712',
+              navy: '#0b1329',
+              card: '#0f172a',
+              border: '#1e293b',
+              accent: '#38bdf8',
+              cyan: '#06b6d4',
+              violet: '#8b5cf6',
+              purple: '#a855f7',
+              emerald: '#10b981'
+            }
+          },
+          animation: {
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float': 'float 6s ease-in-out infinite',
+            'glow': 'glow 3s ease-in-out infinite alternate',
+            'beam': 'beam 8s ease-in-out infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-12px)' },
+            },
+            glow: {
+              '0%': { boxShadow: '0 0 15px rgba(56, 189, 248, 0.2)' },
+              '100%': { boxShadow: '0 0 35px rgba(139, 92, 246, 0.4)' },
+            },
+            beam: {
+              '0%, 100%': { opacity: '0.3', transform: 'translateX(-20%) scaleY(1)' },
+              '50%': { opacity: '0.7', transform: 'translateX(20%) scaleY(1.2)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- GSAP & ScrollTrigger for Cinematic Video-Style Scroll Animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #030712;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #38bdf8;
+    }
+
+    /* Cinematic Glassmorphism with Optical Depth */
+    .glass-card {
+      background: rgba(11, 19, 41, 0.72);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(56, 189, 248, 0.14);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+      box-shadow: 0 20px 40px -15px rgba(56, 189, 248, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      transform: translateY(-4px);
+    }
+
+    .text-gradient {
+      background: linear-gradient(135deg, #ffffff 0%, #38bdf8 50%, #818cf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .text-gradient-cyan {
+      background: linear-gradient(135deg, #38bdf8 0%, #06b6d4 50%, #2dd4bf 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .text-gradient-purple {
+      background: linear-gradient(135deg, #c084fc 0%, #a855f7 50%, #6366f1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .cyber-grid {
+      background-size: 50px 50px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    }
+
+    /* Fixed Fullscreen 3D Canvas Behind All Sections */
+    #cinema-webgl-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Cinematic Vignette Overlay */
+    .cinematic-vignette {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      background: radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(3, 7, 18, 0.75) 85%, rgba(2, 5, 14, 0.95) 100%);
+    }
+
+    /* Cinematic Horizontal Light Flare Streak */
+    .anamorphic-flare {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent 0%, rgba(56, 189, 248, 0.6) 50%, transparent 100%);
+      filter: blur(1px);
+      pointer-events: none;
+      z-index: 40;
+    }
+
+    /* Video-style Section Transition Classes */
+    .cinema-reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+    .cinema-reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body class="bg-[#030712] text-slate-100 font-sans antialiased selection:bg-sky-500 selection:text-black min-h-screen overflow-x-hidden relative">
+
+  <!-- ========================================== -->
+  <!-- FULL-SCREEN CINEMATIC 3D BACKGROUND ENGINE -->
+  <!-- ========================================== -->
+  <canvas id="cinema-webgl-canvas"></canvas>
+
+  <!-- Cinematic Visual Layers: Vignette & Anamorphic Flare -->
+  <div class="cinematic-vignette"></div>
+  <div class="anamorphic-flare"></div>
+
+  <!-- Background Cyber Ambient Glow Orbs -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="cyber-grid absolute inset-0 opacity-30"></div>
+    <div class="absolute -top-40 -left-40 w-[32rem] h-[32rem] bg-sky-500/10 rounded-full blur-[140px] animate-pulse-slow"></div>
+    <div class="absolute top-1/3 -right-40 w-[30rem] h-[30rem] bg-purple-600/10 rounded-full blur-[160px] animate-pulse-slow" style="animation-delay: 2s;"></div>
+    <div class="absolute -bottom-40 left-1/3 w-[34rem] h-[34rem] bg-cyan-500/10 rounded-full blur-[150px] animate-pulse-slow" style="animation-delay: 4s;"></div>
+  </div>
+
+  <!-- NAVIGATION BAR -->
+  <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" id="main-nav">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <nav class="glass-card rounded-2xl px-6 py-3.5 flex items-center justify-between border-slate-800/80 shadow-2xl backdrop-blur-xl">
+        
+        <!-- Logo -->
+        <a href="#hero" class="flex items-center gap-3 group">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 via-indigo-500 to-purple-600 p-[1.5px] shadow-lg shadow-sky-500/20 group-hover:scale-105 transition-transform">
+            <div class="w-full h-full bg-[#030712] rounded-[10px] flex items-center justify-center">
+              <span class="font-heading font-bold text-sky-400 text-lg">D</span>
+            </div>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-heading font-bold text-base text-white tracking-wide group-hover:text-sky-400 transition-colors">
+              Dillu Chaubey
+            </span>
+            <span class="text-[10px] text-sky-400/80 font-mono tracking-wider">CSE-IoT • 2023–27</span>
+          </div>
+        </a>
+
+        <!-- Desktop Menu Links -->
+        <div class="hidden md:flex items-center gap-1 lg:gap-2">
+          <a href="#about" class="px-3.5 py-1.5 text-sm font-medium text-slate-300 hover:text-sky-400 hover:bg-slate-800/50 rounded-lg transition-all">About</a>
+          <a href="#skills" class="px-3.5 py-1.5 text-sm font-medium text-slate-300 hover:text-sky-400 hover:bg-slate-800/50 rounded-lg transition-all">Skills</a>
+          <a href="#projects" class="px-3.5 py-1.5 text-sm font-medium text-slate-300 hover:text-sky-400 hover:bg-slate-800/50 rounded-lg transition-all">Projects</a>
+          <a href="#education" class="px-3.5 py-1.5 text-sm font-medium text-slate-300 hover:text-sky-400 hover:bg-slate-800/50 rounded-lg transition-all">Education</a>
+          <a href="#certifications" class="px-3.5 py-1.5 text-sm font-medium text-slate-300 hover:text-sky-400 hover:bg-slate-800/50 rounded-lg transition-all">Certifications</a>
+          <a href="#contact" class="px-3.5 py-1.5 text-sm font-medium text-slate-300 hover:text-sky-400 hover:bg-slate-800/50 rounded-lg transition-all">Contact</a>
+        </div>
+
+        <!-- Right Quick CTAs -->
+        <div class="hidden sm:flex items-center gap-2.5">
+          <!-- Resume Button & Manage Dropdown Trigger -->
+          <div class="flex items-center rounded-xl bg-sky-500/10 border border-sky-500/30 overflow-hidden shadow-sm hover:border-sky-500/60 transition-all">
+            <a 
+              id="nav-resume-btn" 
+              href="assets/dillu_resume.pdf" 
+              download="Dillu_Kumar_Chaubey_Resume.pdf" 
+              class="flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-sky-300 hover:bg-sky-500 hover:text-black transition-all"
+            >
+              <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              <span>Resume</span>
+            </a>
+            <button 
+              onclick="openResumeManager()" 
+              title="Change or Update Resume" 
+              class="px-2 py-2 text-sky-400 hover:bg-sky-500/20 border-l border-sky-500/30 transition-colors"
+            >
+              <i data-lucide="settings-2" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+          <a href="https://github.com/dilluthecoder" target="_blank" rel="noopener noreferrer" class="p-2 rounded-xl bg-slate-800/60 text-slate-300 hover:text-sky-400 hover:bg-slate-800 border border-slate-700/60 transition-all" aria-label="GitHub Profile">
+            <i data-lucide="github" class="w-4 h-4"></i>
+          </a>
+        </div>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button id="mobile-menu-btn" class="md:hidden p-2 text-slate-400 hover:text-white rounded-lg focus:outline-none" aria-label="Toggle Navigation">
+          <i data-lucide="menu" id="menu-icon" class="w-6 h-6"></i>
+        </button>
+
+      </nav>
+
+      <!-- Mobile Dropdown Menu -->
+      <div id="mobile-menu" class="hidden md:hidden mt-2 p-4 glass-card rounded-2xl border-slate-800 space-y-2">
+        <a href="#about" class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-sky-500/10 hover:text-sky-400 mobile-link">About</a>
+        <a href="#skills" class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-sky-500/10 hover:text-sky-400 mobile-link">Skills</a>
+        <a href="#projects" class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-sky-500/10 hover:text-sky-400 mobile-link">Projects</a>
+        <a href="#education" class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-sky-500/10 hover:text-sky-400 mobile-link">Education</a>
+        <a href="#certifications" class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-sky-500/10 hover:text-sky-400 mobile-link">Certifications</a>
+        <a href="#contact" class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-sky-500/10 hover:text-sky-400 mobile-link">Contact</a>
+        <div class="pt-3 border-t border-slate-800 flex items-center justify-between">
+          <div class="flex items-center gap-1.5">
+            <a id="mobile-resume-btn" href="assets/dillu_resume.pdf" download="Dillu_Kumar_Chaubey_Resume.pdf" class="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-sky-500 text-black">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              <span>Download Resume</span>
+            </a>
+            <button onclick="openResumeManager()" class="p-2 rounded-xl bg-slate-800 text-sky-400 border border-slate-700" title="Change Resume">
+              <i data-lucide="settings-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <div class="flex items-center gap-2">
+            <a href="https://github.com/dilluthecoder" target="_blank" class="p-2 text-slate-300 hover:text-sky-400"><i data-lucide="github" class="w-5 h-5"></i></a>
+            <a href="https://www.linkedin.com/in/dillu-kumar-chaubey-b829062b1/" target="_blank" class="p-2 text-slate-300 hover:text-sky-400"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN WRAPPER -->
+  <main class="relative z-10 pt-28">
+
+    <!-- ========================================== -->
+    <!-- PHASE 4: HERO SECTION WITH 3D CANVAS & GITHUB AVATAR -->
+    <!-- ========================================== -->
+    <section id="hero" class="min-h-[92vh] flex items-center justify-center relative px-4 sm:px-6 lg:px-8 py-12 lg:py-20 cinema-reveal">
+
+      <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center relative z-20">
+        
+        <!-- Left Hero Copy & Actions -->
+        <div class="lg:col-span-7 flex flex-col items-start space-y-6 text-left">
+          
+          <!-- Badges Row: Status + AI/ML Learning Focus -->
+          <div class="flex flex-wrap items-center gap-3">
+            <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-900/80 border border-emerald-500/30 backdrop-blur-md shadow-lg shadow-emerald-500/5">
+              <span class="relative flex h-2.5 w-2.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+              </span>
+              <span class="text-xs font-medium text-emerald-400 tracking-wide font-mono">Open to Opportunities</span>
+            </div>
+
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-purple-500/10 to-indigo-500/10 border border-purple-500/30 backdrop-blur-md text-xs font-mono text-purple-300">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5 text-purple-400 animate-pulse"></i>
+              <span>Currently Learning: <strong>AI &amp; Machine Learning</strong></span>
+            </div>
+          </div>
+
+          <!-- Main Heading -->
+          <div class="space-y-2">
+            <h1 class="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1]">
+              Hi, I'm <br class="hidden sm:inline">
+              <span class="text-gradient">Dillu Chaubey.</span>
+            </h1>
+            <p class="font-mono text-sm sm:text-base text-sky-400/90 font-medium tracking-wide">
+              &lt;Aspiring Software Engineer • Full-Stack &amp; AI/ML Explorer /&gt;
+            </p>
+          </div>
+
+          <!-- Verified Tagline & Persona -->
+          <p class="text-lg sm:text-xl text-slate-300 font-light leading-relaxed max-w-2xl border-l-2 border-sky-500/50 pl-4 py-1">
+            "Building logic, exploring intelligence, creating possibilities."
+          </p>
+          <p class="text-sm sm:text-base text-slate-400 max-w-xl leading-relaxed">
+            Computer Science student specializing in <strong class="text-slate-200 font-medium">IoT</strong> at <strong class="text-slate-200 font-medium">Government Engineering College Madhubani</strong> (2023–2027). Actively exploring <strong class="text-purple-300 font-medium">Artificial Intelligence &amp; Machine Learning (AI/ML)</strong>, building production MERN applications, and engineering C++ algorithms.
+          </p>
+
+          <!-- CTAs -->
+          <div class="pt-2 flex flex-wrap items-center gap-4 w-full sm:w-auto">
+            <a href="#projects" class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-heading font-semibold text-sm bg-gradient-to-r from-sky-400 to-blue-600 text-black hover:from-sky-300 hover:to-blue-500 shadow-lg shadow-sky-500/25 hover:shadow-sky-500/40 hover:-translate-y-0.5 transition-all">
+              <span>Explore Projects</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+
+            <!-- Resume Download with Manage Option -->
+            <div class="flex items-center w-full sm:w-auto">
+              <a 
+                id="hero-resume-btn"
+                href="assets/dillu_resume.pdf" 
+                download="Dillu_Kumar_Chaubey_Resume.pdf" 
+                class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-3.5 rounded-l-xl font-heading font-semibold text-sm bg-slate-900/90 text-slate-200 border border-slate-700/80 hover:border-sky-500/60 hover:text-sky-300 shadow-md transition-all"
+              >
+                <i data-lucide="file-text" class="w-4 h-4 text-sky-400"></i>
+                <span id="hero-resume-text">Download Resume</span>
+              </a>
+              <button 
+                onclick="openResumeManager()" 
+                title="Change or Update Resume File"
+                class="px-3.5 py-3.5 rounded-r-xl bg-slate-900/90 text-sky-400 border border-l-0 border-slate-700/80 hover:bg-slate-800 hover:text-sky-300 transition-colors shadow-md"
+              >
+                <i data-lucide="settings-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+
+            <a href="https://github.com/dilluthecoder" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl font-heading font-medium text-sm bg-slate-900/40 text-slate-400 border border-slate-800 hover:text-white hover:border-slate-700 transition-all">
+              <i data-lucide="github" class="w-4 h-4"></i>
+              <span>GitHub</span>
+            </a>
+          </div>
+
+          <!-- Social Quick Row -->
+          <div class="flex items-center gap-4 pt-2 text-slate-400 text-sm">
+            <span class="text-xs text-slate-500 font-mono">CONNECT:</span>
+            <a href="https://www.linkedin.com/in/dillu-kumar-chaubey-b829062b1/" target="_blank" rel="noopener noreferrer" class="hover:text-sky-400 transition-colors" title="LinkedIn">
+              <i data-lucide="linkedin" class="w-5 h-5"></i>
+            </a>
+            <a href="https://github.com/dilluthecoder" target="_blank" rel="noopener noreferrer" class="hover:text-sky-400 transition-colors" title="GitHub">
+              <i data-lucide="github" class="w-5 h-5"></i>
+            </a>
+            <a href="https://www.instagram.com/dilluchaubey/" target="_blank" rel="noopener noreferrer" class="hover:text-pink-400 transition-colors" title="Instagram">
+              <i data-lucide="instagram" class="w-5 h-5"></i>
+            </a>
+            <a href="https://youtube.com/@gecm_wale" target="_blank" rel="noopener noreferrer" class="hover:text-red-400 transition-colors" title="YouTube">
+              <i data-lucide="youtube" class="w-5 h-5"></i>
+            </a>
+            <a href="mailto:katayandillu@gmail.com" class="hover:text-amber-400 transition-colors" title="Email Dillu">
+              <i data-lucide="mail" class="w-5 h-5"></i>
+            </a>
+          </div>
+
+        </div>
+
+        <!-- Right 3D Visual Object & GITHUB PROFILE PICTURE -->
+        <div class="lg:col-span-5 flex justify-center items-center relative">
+          
+          <!-- Outer Holographic Rings -->
+          <div class="relative w-72 h-72 sm:w-80 sm:h-80 md:w-96 md:h-96 flex items-center justify-center">
+            
+            <div class="absolute inset-0 rounded-full border border-sky-500/20 animate-spin" style="animation-duration: 25s;"></div>
+            <div class="absolute inset-4 rounded-full border border-dashed border-purple-500/25 animate-spin" style="animation-duration: 18s; animation-direction: reverse;"></div>
+            <div class="absolute inset-10 rounded-full border border-cyan-500/20"></div>
+
+            <!-- Glowing Center Orb Backdrop -->
+            <div class="absolute inset-8 rounded-full bg-gradient-to-tr from-sky-500/20 via-indigo-600/20 to-purple-600/20 blur-2xl"></div>
+
+            <!-- GITHUB PROFILE PICTURE CONTAINER -->
+            <div class="relative z-20 w-56 h-56 sm:w-64 sm:h-64 rounded-full p-2 bg-gradient-to-tr from-sky-400 via-indigo-500 to-purple-500 shadow-[0_0_50px_rgba(56,189,248,0.35)] group">
+              <div class="w-full h-full rounded-full overflow-hidden bg-slate-950 border-2 border-slate-900 relative">
+                <img 
+                  id="profile-avatar-img"
+                  src="assets/github_avatar.png" 
+                  alt="Dillu Kumar Chaubey GitHub Profile Picture" 
+                  class="w-full h-full object-cover object-center scale-105 group-hover:scale-110 transition-transform duration-500"
+                  onerror="this.src='https://avatars.githubusercontent.com/u/179100399?v=4'"
+                >
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent"></div>
+              </div>
+            </div>
+
+            <!-- Floating 3D Tech Badges -->
+            <div class="absolute -top-2 left-4 glass-card px-3.5 py-1.5 rounded-xl text-xs font-mono font-medium text-purple-300 border-purple-500/30 flex items-center gap-1.5 shadow-lg animate-float" style="animation-delay: 0s;">
+              <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+              <span>AI / ML Focus</span>
+            </div>
+
+            <div class="absolute top-1/2 -right-4 glass-card px-3.5 py-1.5 rounded-xl text-xs font-mono font-medium text-sky-300 border-sky-500/30 flex items-center gap-1.5 shadow-lg animate-float" style="animation-delay: 1.5s;">
+              <span class="w-2 h-2 rounded-full bg-sky-400"></span>
+              <span>MERN Stack</span>
+            </div>
+
+            <div class="absolute -bottom-2 right-6 glass-card px-3.5 py-1.5 rounded-xl text-xs font-mono font-medium text-cyan-300 border-cyan-500/30 flex items-center gap-1.5 shadow-lg animate-float" style="animation-delay: 3s;">
+              <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+              <span>CSE • IoT</span>
+            </div>
+
+            <div class="absolute bottom-1/4 -left-6 glass-card px-3.5 py-1.5 rounded-xl text-xs font-mono font-medium text-emerald-300 border-emerald-500/30 flex items-center gap-1.5 shadow-lg animate-float" style="animation-delay: 4.5s;">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <span>C++ &amp; Python</span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Bottom Scroll Down Indicator -->
+      <a href="#about" class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-500 hover:text-sky-400 transition-colors z-20 group">
+        <span class="text-[11px] font-mono tracking-widest uppercase">Scroll</span>
+        <i data-lucide="chevron-down" class="w-4 h-4 animate-bounce"></i>
+      </a>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- PHASE 5: ABOUT ME SECTION -->
+    <!-- ========================================== -->
+    <section id="about" class="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative cinema-reveal">
+      
+      <!-- Section Header -->
+      <div class="flex flex-col items-center text-center space-y-3 mb-16">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs font-mono">
+          <span>01 // BACKGROUND</span>
+        </div>
+        <h2 class="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
+          About <span class="text-gradient">My Journey</span>
+        </h2>
+        <p class="text-slate-400 max-w-2xl text-sm sm:text-base">
+          Engineering scalable web systems, mastering data structures, and connecting hardware with intelligent AI/ML software.
+        </p>
+      </div>
+
+      <!-- Grid Content -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+        
+        <!-- Left Story Card -->
+        <div class="lg:col-span-7 glass-card rounded-3xl p-8 sm:p-10 flex flex-col justify-between relative overflow-hidden group">
+          <div class="absolute -right-20 -bottom-20 w-64 h-64 bg-sky-500/5 rounded-full blur-3xl group-hover:bg-sky-500/10 transition-colors"></div>
+          
+          <div class="space-y-6 relative z-10">
+            <div class="flex items-center gap-3">
+              <div class="p-2.5 rounded-xl bg-sky-500/10 text-sky-400 border border-sky-500/20">
+                <i data-lucide="terminal" class="w-6 h-6"></i>
+              </div>
+              <div>
+                <h3 class="font-heading text-xl font-bold text-white">B.Tech in Computer Science &amp; Engineering (IoT)</h3>
+                <p class="text-xs font-mono text-slate-400">Government Engineering College Madhubani • 2023–2027</p>
+              </div>
+            </div>
+
+            <p class="text-slate-300 leading-relaxed text-sm sm:text-base">
+              I am an aspiring software engineer pursuing my B.Tech in <strong class="text-sky-300 font-semibold">Computer Science and Engineering with specialization in Internet of Things (IoT)</strong> at Government Engineering College Madhubani (affiliated with Bihar Engineering University).
+            </p>
+
+            <p class="text-slate-300 leading-relaxed text-sm sm:text-base">
+              My technical journey is expanding into <strong class="text-purple-300 font-semibold">Artificial Intelligence &amp; Machine Learning (AI/ML)</strong>, studying algorithmic modeling, data pipelines, and intelligence architectures. From architecting the live full-stack <strong class="text-white font-medium">Musharwa Village Portal</strong> with MERN to solving complex algorithmic challenges in <strong class="text-white font-medium">C++</strong> and designing sensor systems, I combine curiosity with clean execution.
+            </p>
+
+            <!-- Learning Spotlight Banner -->
+            <div class="p-4 rounded-2xl bg-gradient-to-r from-purple-950/40 via-indigo-950/40 to-slate-900/60 border border-purple-500/30 flex items-center gap-3">
+              <div class="p-2 rounded-xl bg-purple-500/20 text-purple-300 shrink-0">
+                <i data-lucide="brain" class="w-5 h-5"></i>
+              </div>
+              <div class="text-xs text-slate-300">
+                <strong class="text-purple-200 block font-heading">Current Learning Focus: AI &amp; Machine Learning</strong>
+                Studying supervised learning, model evaluation, Python data stacks (NumPy, Pandas, Scikit-Learn), and neural network foundations.
+              </div>
+            </div>
+
+            <div class="pt-4 grid grid-cols-2 sm:grid-cols-3 gap-4 border-t border-slate-800">
+              <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800/80">
+                <span class="block text-xl font-bold font-heading text-sky-400">2023–27</span>
+                <span class="text-xs text-slate-400">B.Tech Batch</span>
+              </div>
+              <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800/80">
+                <span class="block text-xl font-bold font-heading text-purple-400">Bihar, IN</span>
+                <span class="text-xs text-slate-400">Current Base</span>
+              </div>
+              <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800/80 col-span-2 sm:col-span-1">
+                <span class="block text-xl font-bold font-heading text-emerald-400">GEC Madhubani</span>
+                <span class="text-xs text-slate-400">College Campus</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right 4 Key Focus Pillars -->
+        <div class="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          
+          <div class="glass-card rounded-2xl p-6 flex flex-col justify-between hover:-translate-y-1 transition-transform border-purple-500/30">
+            <div class="p-3 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20 w-fit mb-4">
+              <i data-lucide="brain" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 mb-2 inline-block">Current Focus</span>
+              <h4 class="font-heading font-bold text-white text-base mb-1">AI &amp; Machine Learning</h4>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Exploring ML models, statistical learning, neural networks, and Python intelligence pipelines.
+              </p>
+            </div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 flex flex-col justify-between hover:-translate-y-1 transition-transform">
+            <div class="p-3 rounded-xl bg-sky-500/10 text-sky-400 border border-sky-500/20 w-fit mb-4">
+              <i data-lucide="layers" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h4 class="font-heading font-bold text-white text-base mb-1">MERN Full-Stack</h4>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Building responsive SPAs with React, Node.js, Express, and MongoDB Atlas databases.
+              </p>
+            </div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 flex flex-col justify-between hover:-translate-y-1 transition-transform">
+            <div class="p-3 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20 w-fit mb-4">
+              <i data-lucide="cpu" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h4 class="font-heading font-bold text-white text-base mb-1">DSA &amp; Logic</h4>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Mastering data structures, algorithms, and complexity analysis using modern C++ &amp; STL.
+              </p>
+            </div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 flex flex-col justify-between hover:-translate-y-1 transition-transform">
+            <div class="p-3 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 w-fit mb-4">
+              <i data-lucide="wifi" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h4 class="font-heading font-bold text-white text-base mb-1">IoT &amp; Telemetry</h4>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Interfacing sensors, microcontroller firmware, and distributed network telemetry.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- PHASE 6: TECHNICAL SKILLS (WITH AI/ML) -->
+    <!-- ========================================== -->
+    <section id="skills" class="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative cinema-reveal">
+      
+      <!-- Section Header -->
+      <div class="flex flex-col items-center text-center space-y-3 mb-16">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-mono">
+          <span>02 // CAPABILITIES</span>
+        </div>
+        <h2 class="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
+          Technical <span class="text-gradient-purple">Skill Stack</span>
+        </h2>
+        <p class="text-slate-400 max-w-2xl text-sm sm:text-base">
+          Verified programming languages, CS fundamentals, web technologies, and ongoing AI/ML exploration.
+        </p>
+
+        <!-- Category Filter Tabs -->
+        <div class="flex flex-wrap items-center justify-center gap-2 pt-4" id="skill-filter-container">
+          <button class="skill-filter-btn active px-4 py-2 rounded-xl text-xs font-mono font-medium bg-sky-500 text-black shadow-md shadow-sky-500/20 transition-all" data-category="all">All Skills</button>
+          <button class="skill-filter-btn px-4 py-2 rounded-xl text-xs font-mono font-medium bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700 transition-all" data-category="ai">AI / ML</button>
+          <button class="skill-filter-btn px-4 py-2 rounded-xl text-xs font-mono font-medium bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700 transition-all" data-category="programming">Programming</button>
+          <button class="skill-filter-btn px-4 py-2 rounded-xl text-xs font-mono font-medium bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700 transition-all" data-category="web">Web Development</button>
+          <button class="skill-filter-btn px-4 py-2 rounded-xl text-xs font-mono font-medium bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700 transition-all" data-category="cs">CS Core</button>
+          <button class="skill-filter-btn px-4 py-2 rounded-xl text-xs font-mono font-medium bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700 transition-all" data-category="tools">Tools &amp; IoT</button>
+        </div>
+      </div>
+
+      <!-- Skills Cards Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="skills-grid">
+        
+        <!-- NEW FEATURED SKILL: AI & MACHINE LEARNING -->
+        <div class="skill-item glass-card rounded-2xl p-6 flex flex-col justify-between border-purple-500/40 hover:border-purple-400 transition-all" data-category="ai">
+          <div class="flex items-center justify-between mb-4">
+            <div class="p-3 rounded-xl bg-purple-500/20 text-purple-300 border border-purple-500/30">
+              <i data-lucide="brain" class="w-6 h-6"></i>
+            </div>
+            <span class="text-[10px] font-mono px-2 py-1 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30">Currently Learning</span>
+          </div>
+          <div>
+            <h3 class="font-heading font-bold text-lg text-white">AI &amp; Machine Learning</h3>
+            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+              Supervised learning models, NumPy &amp; Pandas data processing, Scikit-Learn pipelines, and neural network foundations.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-purple-400">
+            <span>Active Study</span>
+            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+          </div>
+        </div>
+
+        <!-- Programming -->
+        <div class="skill-item glass-card rounded-2xl p-6 flex flex-col justify-between hover:border-sky-500/40 transition-all" data-category="programming">
+          <div class="flex items-center justify-between mb-4">
+            <div class="p-3 rounded-xl bg-sky-500/10 text-sky-400 border border-sky-500/20">
+              <i data-lucide="code-2" class="w-6 h-6"></i>
+            </div>
+            <span class="text-[10px] font-mono px-2 py-1 rounded bg-slate-800 text-slate-400">Core Language</span>
+          </div>
+          <div>
+            <h3 class="font-heading font-bold text-lg text-white">C++</h3>
+            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+              Standard Template Library (STL), memory management, OOP paradigms, and competitive programming logic.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-sky-400">
+            <span>Coursework &amp; DSA</span>
+            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+          </div>
+        </div>
+
+        <div class="skill-item glass-card rounded-2xl p-6 flex flex-col justify-between hover:border-sky-500/40 transition-all" data-category="programming">
+          <div class="flex items-center justify-between mb-4">
+            <div class="p-3 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
+              <i data-lucide="file-code" class="w-6 h-6"></i>
+            </div>
+            <span class="text-[10px] font-mono px-2 py-1 rounded bg-slate-800 text-slate-400">Certified</span>
+          </div>
+          <div>
+            <h3 class="font-heading font-bold text-lg text-white">Python</h3>
+            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+              Scripting, ML data pipelines, algorithmic automation. Verified by Cisco Python Essentials 1 &amp; 2 certifications.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-amber-400">
+            <span>Cisco Certified</span>
+            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+          </div>
+        </div>
+
+        <div class="skill-item glass-card rounded-2xl p-6 flex flex-col justify-between hover:border-sky-500/40 transition-all" data-category="programming">
+          <div class="flex items-center justify-between mb-4">
+            <div class="p-3 rounded-xl bg-orange-500/10 text-orange-400 border border-orange-500/20">
+              <i data-lucide="coffee" class="w-6 h-6"></i>
+            </div>
+            <span class="text-[10px] font-mono px-2 py-1 rounded bg-slate-800 text-slate-400">Object-Oriented</span>
+          </div>
+          <div>
+            <h3 class="font-heading font-bold text-lg text-white">Java</h3>
+            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+              Object-oriented design, class hierarchies, interfaces, and cross-platform algorithmic development.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-orange-400">
+            <span>Academic &amp; DSA</span>
+            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+          </div>
+        </div>
+
+        <!-- Web Development -->
+        <div class="skill-item glass-card rounded-2xl p-6 flex flex-col justify-between hover:border-cyan-500/40 transition-all" data-category="web">
+          <div class="flex items-center justify-between mb-4">
+            <div class="p-3 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+              <i data-lucide="atom" class="w-6 h-6"></i>
+            </div>
+            <span class="text-[10px] font-mono px-2 py-1 rounded bg-slate-800 text-slate-400">Frontend</span>
+          </div>
+          <div>
+            <h3 class="font-heading font-bold text-lg text-white">React.js &amp; Vite</h3>
+            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+              Component lifecycle, hooks, React Router DOM, dynamic state handling, and fast Vite builds.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-cyan-400">
+            <span>MERN Frontend</span>
+            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+          </div>
+        </div>
+
+        <div class="skill-item glass-card rounded-2xl p-6 flex flex-col justify-between hover:border-emerald-500/40 transition-all" data-category="web">
+          <div class="flex items-center justify-between mb-4">
+            <div class="p-3 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              <i data-lucide="server" class="w-6 h-6"></i>
+            </div>
+            <span class="text-[10px] font-mono px-2 py-1 rounded bg-slate-800 text-slate-400">Backend</span>
+          </div>
+          <div>
+            <h3 class="font-heading font-bold text-lg text-white">Node.js &amp; Express</h3>
+            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+              RESTful APIs, routing middleware, authentication handling, file uploads with Multer, and CORS.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-emerald-400">
+            <span>Server Architecture</span>
+            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+          </div>
+        </div>
+
+        <div class="skill-item glass-card rounded-2xl p-6 flex flex-col justify-between hover:border-green-500/40 transition-all" data-category="web">
+          <div class="flex items-center justify-between mb-4">
+            <div class="p-3 rounded-xl bg-green-500/10 text-green-400 border border-green-500/20">
+              <i data-lucide="database" class="w-6 h-6"></i>
+            </div>
+            <span class="text-[10px] font-mono px-2 py-1 rounded bg-slate-800 text-slate-400">Database</span>
+          </div>
+          <div>
+            <h3 class="font-heading font-bold text-lg text-white">MongoDB Atlas</h3>
+            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+              NoSQL document modeling, indexing, aggregation pipelines, and cloud cluster deployment on MongoDB Atlas.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-green-400">
+            <span>Cloud Database</span>
+            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+          </div>
+        </div>
+
+        <div class="skill-item glass-card rounded-2xl p-6 flex flex-col justify-between hover:border-yellow-500/40 transition-all" data-category="web">
+          <div class="flex items-center justify-between mb-4">
+            <div class="p-3 rounded-xl bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">
+              <i data-lucide="braces" class="w-6 h-6"></i>
+            </div>
+            <span class="text-[10px] font-mono px-2 py-1 rounded bg-slate-800 text-slate-400">Frontend Foundation</span>
+          </div>
+          <div>
+            <h3 class="font-heading font-bold text-lg text-white">JavaScript, HTML5 &amp; CSS3</h3>
+            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+              Modern ES6+, DOM manipulation, Flexbox, CSS Grid, keyframe animations, and mobile-first responsive layouts.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-yellow-400">
+            <span>Web Standards</span>
+            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+          </div>
+        </div>
+
+        <!-- Computer Science Core -->
+        <div class="skill-item glass-card rounded-2xl p-6 flex flex-col justify-between hover:border-purple-500/40 transition-all" data-category="cs">
+          <div class="flex items-center justify-between mb-4">
+            <div class="p-3 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
+              <i data-lucide="network" class="w-6 h-6"></i>
+            </div>
+            <span class="text-[10px] font-mono px-2 py-1 rounded bg-slate-800 text-slate-400">CS Core</span>
+          </div>
+          <div>
+            <h3 class="font-heading font-bold text-lg text-white">DSA &amp; OOP</h3>
+            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+              Trees, Graphs, Stacks, Queues, Sorting algorithms, encapsulation, inheritance, polymorphism, and abstraction.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-purple-400">
+            <span>Core Foundation</span>
+            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+          </div>
+        </div>
+
+        <div class="skill-item glass-card rounded-2xl p-6 flex flex-col justify-between hover:border-purple-500/40 transition-all" data-category="cs">
+          <div class="flex items-center justify-between mb-4">
+            <div class="p-3 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
+              <i data-lucide="hard-drive" class="w-6 h-6"></i>
+            </div>
+            <span class="text-[10px] font-mono px-2 py-1 rounded bg-slate-800 text-slate-400">Systems</span>
+          </div>
+          <div>
+            <h3 class="font-heading font-bold text-lg text-white">DBMS, OS &amp; Networks</h3>
+            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+              Relational schemas, SQL queries, OS process concurrency, and Cisco CCNA certified networking fundamentals.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-purple-400">
+            <span>Systems &amp; CCNA</span>
+            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+          </div>
+        </div>
+
+        <!-- Tools & IoT -->
+        <div class="skill-item glass-card rounded-2xl p-6 flex flex-col justify-between hover:border-indigo-500/40 transition-all" data-category="tools">
+          <div class="flex items-center justify-between mb-4">
+            <div class="p-3 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+              <i data-lucide="git-branch" class="w-6 h-6"></i>
+            </div>
+            <span class="text-[10px] font-mono px-2 py-1 rounded bg-slate-800 text-slate-400">DevOps &amp; VCS</span>
+          </div>
+          <div>
+            <h3 class="font-heading font-bold text-lg text-white">Git, GitHub &amp; Render</h3>
+            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+              Version control branching, open-source repository workflows, and continuous deployment pipelines on Render.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-indigo-400">
+            <span>Production Tools</span>
+            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+          </div>
+        </div>
+
+        <div class="skill-item glass-card rounded-2xl p-6 flex flex-col justify-between hover:border-cyan-500/40 transition-all" data-category="tools">
+          <div class="flex items-center justify-between mb-4">
+            <div class="p-3 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+              <i data-lucide="radio" class="w-6 h-6"></i>
+            </div>
+            <span class="text-[10px] font-mono px-2 py-1 rounded bg-slate-800 text-slate-400">IoT Specialization</span>
+          </div>
+          <div>
+            <h3 class="font-heading font-bold text-lg text-white">Internet of Things (IoT)</h3>
+            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+              Microcontroller interfacing, sensor telemetry data flows, wireless communication protocols, and embedded logic.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-cyan-400">
+            <span>CSE-IoT Specialization</span>
+            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- PHASE 7: DYNAMIC GITHUB PROJECT SHOWCASE (UPDATED) -->
+    <!-- ========================================== -->
+    <section id="projects" class="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative cinema-reveal">
+      
+      <!-- Section Header -->
+      <div class="flex flex-col items-center text-center space-y-3 mb-16">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-mono">
+          <span>03 // CODE IN ACTION</span>
+        </div>
+        <h2 class="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
+          Verified <span class="text-gradient-cyan">Projects</span>
+        </h2>
+        <p class="text-slate-400 max-w-2xl text-sm sm:text-base">
+          Discovered and audited from authentic GitHub repositories, live deployments, and ongoing AI/ML exploration.
+        </p>
+
+        <!-- Project Filter Buttons -->
+        <div class="flex flex-wrap items-center justify-center gap-2 pt-4" id="project-filter-container">
+          <button class="project-filter-btn active px-4 py-2 rounded-xl text-xs font-mono font-medium bg-cyan-500 text-black shadow-md shadow-cyan-500/20 transition-all" data-category="all">All Projects</button>
+          <button class="project-filter-btn px-4 py-2 rounded-xl text-xs font-mono font-medium bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700 transition-all" data-category="mern">MERN Full-Stack</button>
+          <button class="project-filter-btn px-4 py-2 rounded-xl text-xs font-mono font-medium bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700 transition-all" data-category="ai">AI / ML</button>
+          <button class="project-filter-btn px-4 py-2 rounded-xl text-xs font-mono font-medium bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700 transition-all" data-category="frontend">Frontend &amp; UI</button>
+          <button class="project-filter-btn px-4 py-2 rounded-xl text-xs font-mono font-medium bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700 transition-all" data-category="cpp">C++ / Algorithms</button>
+          <button class="project-filter-btn px-4 py-2 rounded-xl text-xs font-mono font-medium bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700 transition-all" data-category="iot">IoT &amp; Research</button>
+        </div>
+      </div>
+
+      <!-- Projects Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="projects-grid">
+        
+        <!-- PROJECT 1: MUSHARWA VILLAGE COMMUNITY PORTAL (FLAGSHIP) -->
+        <div class="project-card glass-card rounded-3xl overflow-hidden border border-slate-800 flex flex-col justify-between hover:border-sky-500/50 group tilt-card transition-all duration-300 shadow-xl" data-category="mern">
+          
+          <!-- Image / Screenshot Preview -->
+          <div class="relative h-56 sm:h-60 overflow-hidden bg-slate-950">
+            <img 
+              src="assets/musharwa_home.png" 
+              alt="Musharwa Village Community Portal" 
+              class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+            >
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+            
+            <div class="absolute top-3 left-3 flex items-center gap-2">
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-mono font-semibold bg-emerald-500 text-black shadow-md">
+                Production Live
+              </span>
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-mono font-semibold bg-slate-900/90 text-sky-400 border border-sky-500/30">
+                Flagship MERN
+              </span>
+            </div>
+
+            <button 
+              onclick="openProjectModal('musharwa')" 
+              class="absolute bottom-3 right-3 p-2 rounded-xl bg-slate-900/80 text-white hover:bg-sky-500 hover:text-black border border-slate-700 transition-colors shadow-lg"
+              title="Inspect Details &amp; Gallery"
+            >
+              <i data-lucide="maximize-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+          <div class="p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-4">
+            <div class="space-y-2">
+              <h3 class="font-heading text-xl font-bold text-white group-hover:text-sky-400 transition-colors">
+                Musharwa Village Community Portal
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                A full-stack MERN community platform providing a digital hub for Musharwa Village with dynamic notice boards, village cultural gallery, community feedback, and a secure admin dashboard.
+              </p>
+            </div>
+
+            <div class="space-y-3 pt-1">
+              <div class="text-[11px] text-slate-400 font-mono flex items-center gap-1.5">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>
+                <span>Admin Dashboard • Dynamic Notice Board • Gallery CRUD</span>
+              </div>
+
+              <div class="flex flex-wrap gap-1.5">
+                <span class="px-2.5 py-1 rounded-md text-[10px] font-mono bg-sky-500/10 text-sky-300 border border-sky-500/20">React 19</span>
+                <span class="px-2.5 py-1 rounded-md text-[10px] font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">Node.js</span>
+                <span class="px-2.5 py-1 rounded-md text-[10px] font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">Express 5</span>
+                <span class="px-2.5 py-1 rounded-md text-[10px] font-mono bg-green-500/10 text-green-300 border border-green-500/20">MongoDB Atlas</span>
+                <span class="px-2.5 py-1 rounded-md text-[10px] font-mono bg-purple-500/10 text-purple-300 border border-purple-500/20">Render Cloud</span>
+              </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+              <a 
+                href="https://musharwa-village-frontend.onrender.com" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="flex items-center gap-1.5 text-xs font-semibold text-sky-400 hover:text-sky-300"
+              >
+                <i data-lucide="external-link" class="w-4 h-4"></i>
+                <span>Live Website</span>
+              </a>
+              <a 
+                href="https://github.com/Dilluthecoder/musharwa-village" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white"
+              >
+                <i data-lucide="github" class="w-4 h-4"></i>
+                <span>Source Code</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- NEW PROJECT: AI & MACHINE LEARNING EXPLORATORY LAB -->
+        <div class="project-card glass-card rounded-3xl overflow-hidden border border-purple-500/40 flex flex-col justify-between hover:border-purple-400 group tilt-card transition-all duration-300 shadow-xl" data-category="ai">
+          
+          <div class="relative h-56 sm:h-60 overflow-hidden bg-gradient-to-tr from-slate-950 via-purple-950 to-indigo-950 flex items-center justify-center p-6">
+            <div class="w-full h-full rounded-2xl border border-dashed border-purple-500/40 flex flex-col items-center justify-center text-center p-4">
+              <div class="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-300 flex items-center justify-center mb-2 shadow-lg shadow-purple-500/20">
+                <i data-lucide="brain" class="w-6 h-6 animate-pulse"></i>
+              </div>
+              <span class="font-heading font-bold text-white text-base">AI &amp; Machine Learning Lab</span>
+              <span class="text-xs font-mono text-purple-300 mt-1">Python • Models • Data Analysis</span>
+            </div>
+            
+            <div class="absolute top-3 left-3 flex items-center gap-2">
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-mono font-semibold bg-purple-500 text-white shadow-md">
+                Currently Learning
+              </span>
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-mono font-semibold bg-slate-900/90 text-purple-300 border border-purple-500/30">
+                AI / ML
+              </span>
+            </div>
+          </div>
+
+          <div class="p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-4">
+            <div class="space-y-2">
+              <h3 class="font-heading text-xl font-bold text-white group-hover:text-purple-300 transition-colors">
+                AI &amp; Machine Learning Exploratory Lab
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Active hands-on exploration of Machine Learning algorithms, predictive regression models, classification pipelines, data cleaning with Pandas, and neural network foundations.
+              </p>
+            </div>
+
+            <div class="space-y-3 pt-1">
+              <div class="text-[11px] text-slate-400 font-mono flex items-center gap-1.5">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-purple-400"></i>
+                <span>Data Preprocessing • Supervised Learning • Neural Nets</span>
+              </div>
+
+              <div class="flex flex-wrap gap-1.5">
+                <span class="px-2.5 py-1 rounded-md text-[10px] font-mono bg-purple-500/10 text-purple-300 border border-purple-500/20">Python</span>
+                <span class="px-2.5 py-1 rounded-md text-[10px] font-mono bg-purple-500/10 text-purple-300 border border-purple-500/20">NumPy</span>
+                <span class="px-2.5 py-1 rounded-md text-[10px] font-mono bg-purple-500/10 text-purple-300 border border-purple-500/20">Pandas</span>
+                <span class="px-2.5 py-1 rounded-md text-[10px] font-mono bg-purple-500/10 text-purple-300 border border-purple-500/20">Scikit-Learn</span>
+              </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+              <span class="text-xs font-mono text-purple-400">Active Learning Journey</span>
+              <a 
+                href="https://github.com/dilluthecoder" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white"
+              >
+                <i data-lucide="github" class="w-4 h-4"></i>
+                <span>GitHub Profile</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- PROJECT 2: PERSONAL DEVELOPER PORTFOLIO (FOUNDATION) -->
+        <div class="project-card glass-card rounded-3xl overflow-hidden border border-slate-800 flex flex-col justify-between hover:border-purple-500/50 group tilt-card transition-all duration-300 shadow-xl" data-category="frontend">
+          
+          <div class="relative h-56 sm:h-60 overflow-hidden bg-gradient-to-tr from-slate-950 via-slate-900 to-indigo-950 flex items-center justify-center p-6">
+            <div class="w-full h-full rounded-2xl border border-dashed border-slate-800 flex flex-col items-center justify-center text-center p-4">
+              <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center mb-2">
+                <i data-lucide="layout" class="w-6 h-6"></i>
+              </div>
+              <span class="font-heading font-bold text-white text-base">dillu-portfolio</span>
+              <span class="text-xs font-mono text-slate-400 mt-1">Foundation Web Portfolio</span>
+            </div>
+            
+            <div class="absolute top-3 left-3 flex items-center gap-2">
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-mono font-semibold bg-indigo-500 text-white shadow-md">
+                Deployed
+              </span>
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-mono font-semibold bg-slate-900/90 text-purple-400 border border-purple-500/30">
+                GitHub Pages
+              </span>
+            </div>
+          </div>
+
+          <div class="p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-4">
+            <div class="space-y-2">
+              <h3 class="font-heading text-xl font-bold text-white group-hover:text-purple-400 transition-colors">
+                Personal Portfolio (Foundation Edition)
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Dillu's initial personal developer portfolio showcasing skills, resume integration, Typed.js animations, and clean responsive CSS layouts.
+              </p>
+            </div>
+
+            <div class="space-y-3 pt-1">
+              <div class="text-[11px] text-slate-400 font-mono flex items-center gap-1.5">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-purple-400"></i>
+                <span>Responsive Design • Typed.js • Resume Download</span>
+              </div>
+
+              <div class="flex flex-wrap gap-1.5">
+                <span class="px-2.5 py-1 rounded-md text-[10px] font-mono bg-purple-500/10 text-purple-300 border border-purple-500/20">HTML5</span>
+                <span class="px-2.5 py-1 rounded-md text-[10px] font-mono bg-purple-500/10 text-purple-300 border border-purple-500/20">CSS3</span>
+                <span class="px-2.5 py-1 rounded-md text-[10px] font-mono bg-yellow-500/10 text-yellow-300 border border-yellow-500/20">JavaScript</span>
+                <span class="px-2.5 py-1 rounded-md text-[10px] font-mono bg-slate-800 text-slate-300">GitHub Pages</span>
+              </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+              <a 
+                href="https://dilluthecoder.github.io/dillu-portfolio/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="flex items-center gap-1.5 text-xs font-semibold text-purple-400 hover:text-purple-300"
+              >
+                <i data-lucide="external-link" class="w-4 h-4"></i>
+                <span>Live Pages</span>
+              </a>
+              <a 
+                href="https://github.com/Dilluthecoder/dillu-portfolio" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white"
+              >
+                <i data-lucide="github" class="w-4 h-4"></i>
+                <span>Source Code</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- PROJECT 3: DIWALI WEBSITE FOR CHAUBEY FAMILY -->
+        <div class="project-card glass-card rounded-3xl overflow-hidden border border-slate-800 flex flex-col justify-between hover:border-amber-500/50 group tilt-card transition-all duration-300 shadow-xl" data-category="frontend">
+          
+          <div class="relative h-56 sm:h-60 overflow-hidden bg-gradient-to-tr from-slate-950 via-slate-900 to-amber-950 flex items-center justify-center p-6">
+            <div class="w-full h-full rounded-2xl border border-dashed border-slate-800 flex flex-col items-center justify-center text-center p-4">
+              <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center mb-2">
+                <i data-lucide="sparkles" class="w-6 h-6"></i>
+              </div>
+              <span class="font-heading font-bold text-white text-base">Diwali Celebration Site</span>
+              <span class="text-xs font-mono text-slate-400 mt-1">Chaubey Family Greeting</span>
+            </div>
+            
+            <div class="absolute top-3 left-3 flex items-center gap-2">
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-mono font-semibold bg-amber-500 text-black shadow-md">
+                Live
+              </span>
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-mono font-semibold bg-slate-900/90 text-amber-400 border border-amber-500/30">
+                CSS Animation
+              </span>
+            </div>
+          </div>
+
+          <div class="p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-4">
+            <div class="space-y-2">
+              <h3 class="font-heading text-xl font-bold text-white group-hover:text-amber-400 transition-colors">
+                Diwali Website for Chaubey Family
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                A custom festive web experience designed for the Chaubey family featuring CSS glow effects, festive animation keyframes, and celebration greetings.
+              </p>
+            </div>
+
+            <div class="space-y-3 pt-1">
+              <div class="text-[11px] text-slate-400 font-mono flex items-center gap-1.5">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-amber-400"></i>
+                <span>Festive Greeting • CSS Animations • Mobile Optimized</span>
+              </div>
+
+              <div class="flex flex-wrap gap-1.5">
+                <span class="px-2.5 py-1 rounded-md text-[10px] font-mono bg-amber-500/10 text-amber-300 border border-amber-500/20">HTML5</span>
+                <span class="px-2.5 py-1 rounded-md text-[10px] font-mono bg-amber-500/10 text-amber-300 border border-amber-500/20">CSS3 Animations</span>
+                <span class="px-2.5 py-1 rounded-md text-[10px] font-mono bg-slate-800 text-slate-300">GitHub Pages</span>
+              </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+              <a 
+                href="https://dilluthecoder.github.io/Diwali-website-for-chaubey-family/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="flex items-center gap-1.5 text-xs font-semibold text-amber-400 hover:text-amber-300"
+              >
+                <i data-lucide="external-link" class="w-4 h-4"></i>
+                <span>Live Pages</span>
+              </a>
+              <a 
+                href="https://github.com/Dilluthecoder/Diwali-website-for-chaubey-family" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white"
+              >
+                <i data-lucide="github" class="w-4 h-4"></i>
+                <span>Source Code</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- PROJECT 4: C++ & ALGORITHMS LAB -->
+        <div class="project-card glass-card rounded-3xl overflow-hidden border border-slate-800 flex flex-col justify-between hover:border-blue-500/50 group tilt-card transition-all duration-300 shadow-xl" data-category="cpp">
+          
+          <div class="relative h-56 sm:h-60 overflow-hidden bg-gradient-to-tr from-slate-950 via-slate-900 to-blue-950 flex items-center justify-center p-6">
+            <div class="w-full h-full rounded-2xl border border-dashed border-slate-800 flex flex-col items-center justify-center text-center p-4">
+              <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center mb-2">
+                <i data-lucide="binary" class="w-6 h-6"></i>
+              </div>
+              <span class="font-heading font-bold text-white text-base">C++ &amp; DSA Engineering Lab</span>
+              <span class="text-xs font-mono text-slate-400 mt-1">GEC Madhubani Coursework</span>
+            </div>
+            
+            <div class="absolute top-3 left-3 flex items-center gap-2">
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-mono font-semibold bg-blue-500 text-white shadow-md">
+                Core Lab
+              </span>
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-mono font-semibold bg-slate-900/90 text-blue-400 border border-blue-500/30">
+                Algorithms
+              </span>
+            </div>
+          </div>
+
+          <div class="p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-4">
+            <div class="space-y-2">
+              <h3 class="font-heading text-xl font-bold text-white group-hover:text-blue-400 transition-colors">
+                C++ &amp; Data Structures Engineering Lab
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                In-depth algorithmic implementations in C++ covering linked lists, binary search trees, graph algorithms, stack-queue pipelines, and recursion with asymptotic complexity analysis.
+              </p>
+            </div>
+
+            <div class="space-y-3 pt-1">
+              <div class="text-[11px] text-slate-400 font-mono flex items-center gap-1.5">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-blue-400"></i>
+                <span>STL Containers • Graph Traversal • Asymptotic Analysis</span>
+              </div>
+
+              <div class="flex flex-wrap gap-1.5">
+                <span class="px-2.5 py-1 rounded-md text-[10px] font-mono bg-blue-500/10 text-blue-300 border border-blue-500/20">C++</span>
+                <span class="px-2.5 py-1 rounded-md text-[10px] font-mono bg-blue-500/10 text-blue-300 border border-blue-500/20">STL</span>
+                <span class="px-2.5 py-1 rounded-md text-[10px] font-mono bg-slate-800 text-slate-300">DSA</span>
+              </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+              <span class="text-xs font-mono text-slate-400">GEC Madhubani</span>
+              <a 
+                href="https://github.com/dilluthecoder" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white"
+              >
+                <i data-lucide="github" class="w-4 h-4"></i>
+                <span>GitHub Profile</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- PROJECT 5: IOT SMART SENSOR NODE -->
+        <div class="project-card glass-card rounded-3xl overflow-hidden border border-slate-800 flex flex-col justify-between hover:border-emerald-500/50 group tilt-card transition-all duration-300 shadow-xl" data-category="iot">
+          
+          <div class="relative h-56 sm:h-60 overflow-hidden bg-gradient-to-tr from-slate-950 via-slate-900 to-emerald-950 flex items-center justify-center p-6">
+            <div class="w-full h-full rounded-2xl border border-dashed border-slate-800 flex flex-col items-center justify-center text-center p-4">
+              <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-2">
+                <i data-lucide="cpu" class="w-6 h-6"></i>
+              </div>
+              <span class="font-heading font-bold text-white text-base">IoT Environment Telemetry Node</span>
+              <span class="text-xs font-mono text-slate-400 mt-1">CSE-IoT Branch Research</span>
+            </div>
+            
+            <div class="absolute top-3 left-3 flex items-center gap-2">
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-mono font-semibold bg-emerald-500 text-black shadow-md">
+                IoT Specialization
+              </span>
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-mono font-semibold bg-slate-900/90 text-emerald-400 border border-emerald-500/30">
+                Hardware
+              </span>
+            </div>
+          </div>
+
+          <div class="p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-4">
+            <div class="space-y-2">
+              <h3 class="font-heading text-xl font-bold text-white group-hover:text-emerald-400 transition-colors">
+                IoT Smart Environment Sensor Node
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Embedded sensor node architecture engineered as part of the CSE-IoT specialization, sampling ambient environmental parameters, aggregating packets, and transmitting via telemetry protocols.
+              </p>
+            </div>
+
+            <div class="space-y-3 pt-1">
+              <div class="text-[11px] text-slate-400 font-mono flex items-center gap-1.5">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>
+                <span>Microcontroller Firmware • Sensor Polling • Telemetry Data</span>
+              </div>
+
+              <div class="flex flex-wrap gap-1.5">
+                <span class="px-2.5 py-1 rounded-md text-[10px] font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">Embedded C</span>
+                <span class="px-2.5 py-1 rounded-md text-[10px] font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">IoT Sensors</span>
+                <span class="px-2.5 py-1 rounded-md text-[10px] font-mono bg-slate-800 text-slate-300">Wireless Telemetry</span>
+              </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+              <span class="text-xs font-mono text-slate-400">CSE-IoT Project</span>
+              <a 
+                href="https://github.com/dilluthecoder" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white"
+              >
+                <i data-lucide="github" class="w-4 h-4"></i>
+                <span>GitHub Profile</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- PHASE 8: EDUCATION TIMELINE -->
+    <!-- ========================================== -->
+    <section id="education" class="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative cinema-reveal">
+      
+      <div class="flex flex-col items-center text-center space-y-3 mb-16">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-mono">
+          <span>04 // ACADEMICS</span>
+        </div>
+        <h2 class="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
+          Education <span class="text-gradient">Timeline</span>
+        </h2>
+        <p class="text-slate-400 max-w-2xl text-sm sm:text-base">
+          Formal engineering degree at Government Engineering College Madhubani, affiliated with Bihar Engineering University.
+        </p>
+      </div>
+
+      <div class="max-w-4xl mx-auto relative">
+        <div class="absolute left-4 sm:left-1/2 -translate-x-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-sky-500 via-indigo-500 to-purple-600 opacity-30"></div>
+
+        <div class="relative flex flex-col sm:flex-row items-start sm:items-center gap-8 mb-16 group">
+          <div class="absolute left-4 sm:left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-[#030712] border-2 border-sky-400 flex items-center justify-center shadow-[0_0_20px_rgba(56,189,248,0.5)] z-20 group-hover:scale-125 transition-transform">
+            <div class="w-3 h-3 rounded-full bg-sky-400"></div>
+          </div>
+
+          <div class="w-full sm:w-1/2 sm:text-right pl-12 sm:pl-0 sm:pr-12">
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-mono font-bold bg-sky-500/10 text-sky-400 border border-sky-500/30">
+              2023 – 2027 • Present
+            </span>
+            <h4 class="font-heading text-lg font-bold text-white mt-2">Bachelor of Technology (B.Tech)</h4>
+            <p class="text-xs font-mono text-slate-400">Computer Science &amp; Engineering (IoT)</p>
+          </div>
+
+          <div class="w-full sm:w-1/2 pl-12 sm:pl-12">
+            <div class="glass-card rounded-2xl p-6 sm:p-8 hover:border-sky-500/40 transition-all">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="p-2 rounded-xl bg-sky-500/10 text-sky-400">
+                  <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <h5 class="font-heading font-bold text-white text-base">Government Engineering College Madhubani</h5>
+                  <p class="text-xs text-slate-400">Affiliated with Bihar Engineering University (BEU)</p>
+                </div>
+              </div>
+
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4">
+                Enrolled in the Department of Computer Science &amp; Engineering with specialization in Internet of Things. Coursework encompasses Data Structures &amp; Algorithms, Object-Oriented Programming, Database Management Systems, Operating Systems, Computer Networks, Microcontroller Architecture, and Sensor Telemetry.
+              </p>
+
+              <div class="flex flex-wrap gap-1.5 pt-2">
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-800 text-sky-300">Data Structures</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-800 text-purple-300">Computer Networks</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-800 text-cyan-300">IoT Architectures</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-800 text-emerald-300">DBMS</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="relative flex flex-col sm:flex-row-reverse items-start sm:items-center gap-8 group">
+          <div class="absolute left-4 sm:left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-[#030712] border-2 border-purple-400 flex items-center justify-center shadow-[0_0_20px_rgba(168,85,247,0.5)] z-20 group-hover:scale-125 transition-transform">
+            <div class="w-3 h-3 rounded-full bg-purple-400"></div>
+          </div>
+
+          <div class="w-full sm:w-1/2 sm:text-left pl-12 sm:pl-12 sm:pr-0">
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-mono font-bold bg-purple-500/10 text-purple-400 border border-purple-500/30">
+              Pre-Engineering Foundations
+            </span>
+            <h4 class="font-heading text-lg font-bold text-white mt-2">Higher Secondary &amp; STEM Foundations</h4>
+            <p class="text-xs font-mono text-slate-400">Mathematics, Physics &amp; Computer Science</p>
+          </div>
+
+          <div class="w-full sm:w-1/2 pl-12 sm:pl-0 sm:pr-12">
+            <div class="glass-card rounded-2xl p-6 sm:p-8 hover:border-purple-500/40 transition-all text-left">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="p-2 rounded-xl bg-purple-500/10 text-purple-400">
+                  <i data-lucide="book-open" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <h5 class="font-heading font-bold text-white text-base">Science &amp; Mathematics Focus</h5>
+                  <p class="text-xs text-slate-400">Bihar, India</p>
+                </div>
+              </div>
+
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Solid academic grounding in analytical mathematics, analytical physics, and computer fundamentals, fostering the logical foundation for modern software engineering.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- PHASE 9: CERTIFICATIONS & ACHIEVEMENTS -->
+    <!-- ========================================== -->
+    <section id="certifications" class="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative cinema-reveal">
+      
+      <div class="flex flex-col items-center text-center space-y-3 mb-16">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-mono">
+          <span>05 // CREDENTIALS &amp; RECOGNITION</span>
+        </div>
+        <h2 class="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
+          Certifications &amp; <span class="text-gradient">Achievements</span>
+        </h2>
+        <p class="text-slate-400 max-w-2xl text-sm sm:text-base">
+          Verified industry credentials and extracurricular leadership milestones.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <div class="lg:col-span-7 space-y-6">
+          <div class="flex items-center gap-2 mb-2">
+            <i data-lucide="award" class="w-5 h-5 text-sky-400"></i>
+            <h3 class="font-heading text-xl font-bold text-white">Verified Certifications</h3>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 flex items-start gap-4 hover:border-sky-500/40 transition-all">
+            <div class="p-3 rounded-xl bg-sky-500/10 text-sky-400 border border-sky-500/20 shrink-0">
+              <i data-lucide="shield-check" class="w-6 h-6"></i>
+            </div>
+            <div class="space-y-1">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <h4 class="font-heading font-bold text-base text-white">Cisco CCNA Certification</h4>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-sky-500/10 text-sky-300 border border-sky-500/20">Cisco Certified</span>
+              </div>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Comprehensive training in network fundamentals, IP connectivity, IP services, security fundamentals, and network automation.
+              </p>
+            </div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 flex items-start gap-4 hover:border-amber-500/40 transition-all">
+            <div class="p-3 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 shrink-0">
+              <i data-lucide="code" class="w-6 h-6"></i>
+            </div>
+            <div class="space-y-1">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <h4 class="font-heading font-bold text-base text-white">Cisco Python Essentials 1 &amp; 2</h4>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/20">Cisco Academy</span>
+              </div>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Foundations of algorithmic Python programming, object-oriented design, error handling, standard libraries, and automated scripting.
+              </p>
+            </div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 flex items-start gap-4 hover:border-emerald-500/40 transition-all">
+            <div class="p-3 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0">
+              <i data-lucide="lock" class="w-6 h-6"></i>
+            </div>
+            <div class="space-y-1">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <h4 class="font-heading font-bold text-base text-white">Cisco Introduction to Cybersecurity</h4>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">Cisco Academy</span>
+              </div>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Understanding threat vectors, cyber defense methodologies, encryption fundamentals, and network defense architectures.
+              </p>
+            </div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 flex items-start gap-4 hover:border-purple-500/40 transition-all">
+            <div class="p-3 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20 shrink-0">
+              <i data-lucide="users" class="w-6 h-6"></i>
+            </div>
+            <div class="space-y-1">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <h4 class="font-heading font-bold text-base text-white">NPTEL Soft Skills Certification</h4>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-500/10 text-purple-300 border border-purple-500/20">NPTEL / IIT</span>
+              </div>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Professional communication, team leadership, interpersonal negotiation, and workplace collaboration skills.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 space-y-6">
+          <div class="flex items-center gap-2 mb-2">
+            <i data-lucide="trophy" class="w-5 h-5 text-amber-400"></i>
+            <h3 class="font-heading text-xl font-bold text-white">Extracurricular Leadership</h3>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 hover:border-amber-500/40 transition-all space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold">
+                  🏆
+                </div>
+                <div>
+                  <h4 class="font-heading font-bold text-base text-white">Umang Volleyball Winner</h4>
+                  <p class="text-xs text-slate-400">Annual College Sports Tournament</p>
+                </div>
+              </div>
+              <span class="px-2.5 py-1 rounded text-xs font-mono font-bold bg-amber-500/20 text-amber-300">2024</span>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Led the squad to consecutive victory in the college annual athletic tournament, exemplifying team synchronization, discipline, and stamina.
+            </p>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 hover:border-amber-500/40 transition-all space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold">
+                  🏆
+                </div>
+                <div>
+                  <h4 class="font-heading font-bold text-base text-white">Umang Volleyball Winner</h4>
+                  <p class="text-xs text-slate-400">Annual College Sports Tournament</p>
+                </div>
+              </div>
+              <span class="px-2.5 py-1 rounded text-xs font-mono font-bold bg-amber-500/20 text-amber-300">2023</span>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Champion of the inter-branch tournament during the 2023 edition of the Umang athletic meet.
+            </p>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 hover:border-sky-500/40 transition-all space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center">
+                  <i data-lucide="cpu" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <h4 class="font-heading font-bold text-base text-white">Techmantra Organizing Member</h4>
+                  <p class="text-xs text-slate-400">Annual Technical Fest</p>
+                </div>
+              </div>
+              <span class="px-2.5 py-1 rounded text-xs font-mono bg-slate-800 text-sky-300">Core Member</span>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Key committee member managing technical competitions, logistical pipelines, and participant engagement across engineering branches.
+            </p>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 hover:border-purple-500/40 transition-all space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center">
+                  <i data-lucide="compass" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <h4 class="font-heading font-bold text-base text-white">College Treasure Hunt Coordinator</h4>
+                  <p class="text-xs text-slate-400">Campus Event Coordination</p>
+                </div>
+              </div>
+              <span class="px-2.5 py-1 rounded text-xs font-mono bg-slate-800 text-purple-300">Lead Coordinator</span>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Spearheaded clue engineering, campus routing, and real-time execution for one of the college's most popular student events.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- PHASE 10: CONTACT SECTION -->
+    <!-- ========================================== -->
+    <section id="contact" class="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative cinema-reveal">
+      
+      <div class="flex flex-col items-center text-center space-y-3 mb-16">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs font-mono">
+          <span>06 // INITIATE TRANSMISSION</span>
+        </div>
+        <h2 class="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
+          Get in <span class="text-gradient">Contact</span>
+        </h2>
+        <p class="text-slate-400 max-w-2xl text-sm sm:text-base">
+          Let's connect for software engineering internships, AI/ML research collaborations, or technical discussions.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <div class="lg:col-span-5 space-y-4">
+          
+          <a href="mailto:katayandillu@gmail.com" class="glass-card rounded-2xl p-6 flex items-center gap-4 hover:border-sky-500/40 transition-all group block">
+            <div class="p-3.5 rounded-xl bg-sky-500/10 text-sky-400 border border-sky-500/20 group-hover:scale-110 transition-transform">
+              <i data-lucide="mail" class="w-6 h-6"></i>
+            </div>
+            <div class="overflow-hidden">
+              <span class="text-xs font-mono text-slate-400 block">EMAIL DIRECT</span>
+              <span class="font-heading font-bold text-white text-base group-hover:text-sky-300 transition-colors truncate block">
+                katayandillu@gmail.com
+              </span>
+              <span class="text-xs text-slate-500 truncate block">chaubeyydillu123@gmail.com</span>
+            </div>
+          </a>
+
+          <a href="tel:7004842811" class="glass-card rounded-2xl p-6 flex items-center gap-4 hover:border-emerald-500/40 transition-all group block">
+            <div class="p-3.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 group-hover:scale-110 transition-transform">
+              <i data-lucide="phone" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <span class="text-xs font-mono text-slate-400 block">PHONE / WHATSAPP</span>
+              <span class="font-heading font-bold text-white text-base group-hover:text-emerald-300 transition-colors">
+                +91 7004842811
+              </span>
+            </div>
+          </a>
+
+          <div class="glass-card rounded-2xl p-6 flex items-center gap-4">
+            <div class="p-3.5 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
+              <i data-lucide="map-pin" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <span class="text-xs font-mono text-slate-400 block">LOCATION</span>
+              <span class="font-heading font-bold text-white text-base">
+                Madhubani, Bihar, India
+              </span>
+            </div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 space-y-4">
+            <span class="text-xs font-mono text-slate-400 block">SOCIAL CHANNELS</span>
+            <div class="grid grid-cols-2 gap-3">
+              <a href="https://www.linkedin.com/in/dillu-kumar-chaubey-b829062b1/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-900/60 hover:bg-sky-500/10 border border-slate-800 hover:border-sky-500/30 text-slate-300 hover:text-sky-400 transition-all text-xs font-medium">
+                <i data-lucide="linkedin" class="w-4 h-4 text-sky-400"></i>
+                <span>LinkedIn</span>
+              </a>
+              <a href="https://github.com/dilluthecoder" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-900/60 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-slate-300 hover:text-white transition-all text-xs font-medium">
+                <i data-lucide="github" class="w-4 h-4 text-slate-200"></i>
+                <span>GitHub</span>
+              </a>
+              <a href="https://www.instagram.com/dilluchaubey/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-900/60 hover:bg-pink-500/10 border border-slate-800 hover:border-pink-500/30 text-slate-300 hover:text-pink-400 transition-all text-xs font-medium">
+                <i data-lucide="instagram" class="w-4 h-4 text-pink-400"></i>
+                <span>Instagram</span>
+              </a>
+              <a href="https://youtube.com/@gecm_wale" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-900/60 hover:bg-red-500/10 border border-slate-800 hover:border-red-500/30 text-slate-300 hover:text-red-400 transition-all text-xs font-medium">
+                <i data-lucide="youtube" class="w-4 h-4 text-red-400"></i>
+                <span>YouTube</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="lg:col-span-7 glass-card rounded-3xl p-8 sm:p-10 border-slate-800 relative">
+          <form id="contact-form" class="space-y-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div class="space-y-2">
+                <label for="name" class="block text-xs font-mono text-slate-300">YOUR NAME</label>
+                <input 
+                  type="text" 
+                  id="name" 
+                  name="name" 
+                  required 
+                  placeholder="e.g. Alex Sharma"
+                  class="w-full px-4 py-3 rounded-xl bg-slate-900/80 border border-slate-800 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 text-white placeholder-slate-500 text-sm transition-all"
+                >
+              </div>
+
+              <div class="space-y-2">
+                <label for="email" class="block text-xs font-mono text-slate-300">EMAIL ADDRESS</label>
+                <input 
+                  type="email" 
+                  id="email" 
+                  name="email" 
+                  required 
+                  placeholder="alex@domain.com"
+                  class="w-full px-4 py-3 rounded-xl bg-slate-900/80 border border-slate-800 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 text-white placeholder-slate-500 text-sm transition-all"
+                >
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label for="subject" class="block text-xs font-mono text-slate-300">SUBJECT</label>
+              <input 
+                type="text" 
+                id="subject" 
+                name="subject" 
+                required 
+                placeholder="Software Engineering / AI/ML Opportunity"
+                class="w-full px-4 py-3 rounded-xl bg-slate-900/80 border border-slate-800 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 text-white placeholder-slate-500 text-sm transition-all"
+              >
+            </div>
+
+            <div class="space-y-2">
+              <label for="message" class="block text-xs font-mono text-slate-300">YOUR MESSAGE</label>
+              <textarea 
+                id="message" 
+                name="message" 
+                rows="5" 
+                required 
+                placeholder="Hello Dillu, I would like to connect regarding..."
+                class="w-full px-4 py-3 rounded-xl bg-slate-900/80 border border-slate-800 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 text-white placeholder-slate-500 text-sm transition-all resize-none"
+              ></textarea>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+              <button 
+                type="submit" 
+                id="send-btn"
+                class="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-heading font-semibold text-sm bg-gradient-to-r from-sky-400 to-blue-600 text-black hover:from-sky-300 hover:to-blue-500 shadow-lg shadow-sky-500/25 hover:shadow-sky-500/40 hover:-translate-y-0.5 transition-all"
+              >
+                <span>Send Message</span>
+                <i data-lucide="send" class="w-4 h-4"></i>
+              </button>
+
+              <button 
+                type="button" 
+                onclick="copyEmail()" 
+                id="copy-email-btn"
+                class="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-xs font-mono bg-slate-900 text-slate-400 border border-slate-800 hover:text-white hover:border-slate-700 transition-all"
+              >
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                <span id="copy-text">Copy Email Address</span>
+              </button>
+            </div>
+
+            <div id="form-feedback" class="hidden p-4 rounded-xl text-xs font-mono text-center"></div>
+          </form>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- FOOTER -->
+  <!-- ========================================== -->
+  <footer class="border-t border-slate-800/80 bg-[#02050e] relative z-20 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-sky-500/10 text-sky-400 border border-sky-500/20 flex items-center justify-center font-heading font-bold text-sm">
+          D
+        </div>
+        <div>
+          <span class="font-heading font-bold text-white text-sm block">Dillu Kumar Chaubey</span>
+          <span class="text-xs text-slate-400 font-mono">B.Tech CSE-IoT • Government Engineering College Madhubani</span>
+        </div>
+      </div>
+
+      <p class="text-xs text-slate-500 max-w-md">
+        "Building logic, exploring intelligence, creating possibilities." • Developed with Three.js, React, and Tailwind CSS.
+      </p>
+
+      <div class="text-xs font-mono text-slate-500">
+        &copy; <span id="current-year">2026</span> Dillu Chaubey. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================== -->
+  <!-- MODAL: RESUME MANAGER / OPTION TO UPDATE RESUME -->
+  <!-- ========================================== -->
+  <div id="resume-manager-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="glass-card rounded-3xl max-w-xl w-full border-slate-800 overflow-hidden shadow-2xl relative flex flex-col">
+      
+      <!-- Modal Header -->
+      <div class="p-6 border-b border-slate-800 flex items-center justify-between bg-slate-950/80">
+        <div class="flex items-center gap-3">
+          <div class="p-2 rounded-xl bg-sky-500/10 text-sky-400 border border-sky-500/20">
+            <i data-lucide="file-cog" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-heading font-bold text-lg text-white">Manage &amp; Update Resume</h3>
+            <p class="text-xs font-mono text-sky-400">Change your resume anytime after deployment</p>
+          </div>
+        </div>
+        <button onclick="closeResumeManager()" class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-6 space-y-6 text-sm text-slate-300 overflow-y-auto max-h-[75vh]">
+        
+        <!-- Current Resume Status -->
+        <div class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 flex items-center justify-between">
+          <div>
+            <span class="text-[11px] font-mono text-slate-400 block">CURRENT ACTIVE RESUME</span>
+            <span id="current-resume-display" class="font-mono text-xs text-emerald-400 font-semibold truncate block max-w-xs">
+              assets/dillu_resume.pdf (Verified Original)
+            </span>
+          </div>
+          <a 
+            id="test-view-resume" 
+            href="assets/dillu_resume.pdf" 
+            target="_blank" 
+            class="px-3 py-1.5 rounded-lg text-xs font-mono bg-sky-500/10 text-sky-300 border border-sky-500/30 hover:bg-sky-500 hover:text-black transition-all"
+          >
+            Preview
+          </a>
+        </div>
+
+        <!-- Option 1: Custom Live URL (Google Drive / Cloud / GitHub) -->
+        <div class="space-y-3 p-4 rounded-2xl bg-slate-900/50 border border-slate-800/80">
+          <div class="flex items-center gap-2">
+            <i data-lucide="link" class="w-4 h-4 text-sky-400"></i>
+            <h4 class="font-heading font-bold text-white text-sm">Option 1: Point to Online Link</h4>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Paste any Google Drive, GitHub, Dropbox, or Cloud link to your new resume. All download buttons on your portfolio will immediately open this link.
+          </p>
+          <div class="flex gap-2">
+            <input 
+              type="url" 
+              id="custom-resume-url" 
+              placeholder="https://drive.google.com/file/d/.../view" 
+              class="flex-1 px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:border-sky-500"
+            >
+            <button 
+              onclick="saveCustomResumeUrl()" 
+              class="px-4 py-2 rounded-xl text-xs font-bold bg-sky-500 text-black hover:bg-sky-400 transition-all shrink-0"
+            >
+              Apply Link
+            </button>
+          </div>
+        </div>
+
+        <!-- Option 2: Upload New PDF File directly -->
+        <div class="space-y-3 p-4 rounded-2xl bg-slate-900/50 border border-slate-800/80">
+          <div class="flex items-center gap-2">
+            <i data-lucide="upload-cloud" class="w-4 h-4 text-purple-400"></i>
+            <h4 class="font-heading font-bold text-white text-sm">Option 2: Direct PDF Upload (In-Browser)</h4>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Select an updated resume PDF from your device. It will be stored instantly in your browser memory.
+          </p>
+          <input 
+            type="file" 
+            id="resume-file-input" 
+            accept="application/pdf" 
+            onchange="handleResumeFileUpload(event)"
+            class="block w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-purple-500/10 file:text-purple-300 hover:file:bg-purple-500 hover:file:text-black cursor-pointer"
+          >
+        </div>
+
+        <!-- Option 3: Permanent Code Update Guide -->
+        <div class="p-4 rounded-2xl bg-slate-950/60 border border-dashed border-slate-800 space-y-2">
+          <div class="flex items-center gap-2">
+            <i data-lucide="info" class="w-4 h-4 text-cyan-400"></i>
+            <h5 class="font-heading font-bold text-white text-xs">How to update permanently in Git:</h5>
+          </div>
+          <p class="text-[11px] text-slate-400 leading-relaxed font-mono">
+            Simply replace the file at <span class="text-sky-300 font-semibold">assets/dillu_resume.pdf</span> with your new PDF using the exact same filename, then run:
+            <code class="block my-1.5 p-2 rounded bg-black text-emerald-400 text-[10px]">git add assets/dillu_resume.pdf && git commit -m "Update resume" && git push</code>
+          </p>
+        </div>
+
+        <div id="resume-manager-msg" class="hidden p-3 rounded-xl text-xs font-mono text-center"></div>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="p-5 border-t border-slate-800 bg-slate-950/90 flex items-center justify-between">
+        <button 
+          onclick="resetDefaultResume()" 
+          class="text-xs font-mono text-slate-400 hover:text-red-400 transition-colors"
+        >
+          Reset to Original Resume
+        </button>
+        <button 
+          onclick="closeResumeManager()" 
+          class="px-5 py-2 rounded-xl text-xs font-semibold bg-slate-800 text-white hover:bg-slate-700 transition-all"
+        >
+          Close
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: PROJECT DETAILS & SCREENSHOTS VIEWER -->
+  <!-- ========================================== -->
+  <div id="project-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="glass-card rounded-3xl max-w-3xl w-full border-slate-800 overflow-hidden shadow-2xl relative max-h-[90vh] flex flex-col">
+      
+      <!-- Modal Header -->
+      <div class="p-6 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
+        <div>
+          <h3 id="modal-title" class="font-heading font-bold text-xl text-white">Project Inspection</h3>
+          <p id="modal-subtitle" class="text-xs font-mono text-sky-400">Verified GitHub &amp; Deployment Details</p>
+        </div>
+        <button onclick="closeProjectModal()" class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body (Scrollable) -->
+      <div class="p-6 overflow-y-auto space-y-6 flex-1 text-sm text-slate-300">
+        
+        <!-- Screenshot Carousel -->
+        <div class="space-y-2">
+          <span class="text-xs font-mono text-slate-400">VERIFIED SCREENSHOTS</span>
+          <div class="relative rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 aspect-video">
+            <img id="modal-img" src="assets/musharwa_home.png" alt="Screenshot" class="w-full h-full object-cover">
+          </div>
+          <div class="flex items-center gap-2 overflow-x-auto py-2" id="modal-thumbnails">
+            <button onclick="setModalImg('assets/musharwa_home.png')" class="p-1 rounded-lg border border-sky-500 shrink-0">
+              <img src="assets/musharwa_home.png" class="w-16 h-10 object-cover rounded">
+            </button>
+            <button onclick="setModalImg('assets/musharwa_notice.png')" class="p-1 rounded-lg border border-slate-800 shrink-0">
+              <img src="assets/musharwa_notice.png" class="w-16 h-10 object-cover rounded">
+            </button>
+            <button onclick="setModalImg('assets/musharwa_about.png')" class="p-1 rounded-lg border border-slate-800 shrink-0">
+              <img src="assets/musharwa_about.png" class="w-16 h-10 object-cover rounded">
+            </button>
+            <button onclick="setModalImg('assets/musharwa_feedback.png')" class="p-1 rounded-lg border border-slate-800 shrink-0">
+              <img src="assets/musharwa_feedback.png" class="w-16 h-10 object-cover rounded">
+            </button>
+            <button onclick="setModalImg('assets/musharwa_gallery.png')" class="p-1 rounded-lg border border-slate-800 shrink-0">
+              <img src="assets/musharwa_gallery.png" class="w-16 h-10 object-cover rounded">
+            </button>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="space-y-2">
+          <span class="text-xs font-mono text-slate-400">ARCHITECTURE &amp; FEATURES</span>
+          <p id="modal-desc" class="text-slate-300 leading-relaxed text-sm">
+            Musharwa Village Community Portal is a full-stack MERN application connecting residents with digital information. It features a public-facing website with real-time notice updates, cultural photo gallery, community feedback, and a protected admin console for content moderation.
+          </p>
+        </div>
+
+        <!-- Tech Stack -->
+        <div class="space-y-2">
+          <span class="text-xs font-mono text-slate-400">TECHNOLOGY STACK</span>
+          <div class="flex flex-wrap gap-2" id="modal-tech">
+            <span class="px-3 py-1 rounded-md text-xs font-mono bg-sky-500/10 text-sky-300 border border-sky-500/20">React 19</span>
+            <span class="px-3 py-1 rounded-md text-xs font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">Node.js</span>
+            <span class="px-3 py-1 rounded-md text-xs font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">Express.js 5</span>
+            <span class="px-3 py-1 rounded-md text-xs font-mono bg-green-500/10 text-green-300 border border-green-500/20">MongoDB Atlas</span>
+            <span class="px-3 py-1 rounded-md text-xs font-mono bg-purple-500/10 text-purple-300 border border-purple-500/20">Render Web Services</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-6 border-t border-slate-800 bg-slate-950/80 flex flex-wrap items-center justify-between gap-4">
+        <a 
+          id="modal-live-link" 
+          href="https://musharwa-village-frontend.onrender.com" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-xs bg-sky-500 text-black hover:bg-sky-400 transition-all shadow-md"
+        >
+          <i data-lucide="external-link" class="w-4 h-4"></i>
+          <span>Open Live Application</span>
+        </a>
+
+        <a 
+          id="modal-repo-link" 
+          href="https://github.com/Dilluthecoder/musharwa-village" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-xs bg-slate-900 text-slate-300 border border-slate-700 hover:text-white hover:border-slate-600 transition-all"
+        >
+          <i data-lucide="github" class="w-4 h-4"></i>
+          <span>View GitHub Repository</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- JAVASCRIPT: CINEMATIC THREE.JS 3D ENGINE & GSAP SCROLL FX -->
+  <!-- ========================================== -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Set Copyright Year
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    // ----------------------------------------------------
+    // FULL-SCREEN CINEMATIC 3D ENGINE (THREE.JS)
+    // ----------------------------------------------------
+    (function initCinematicEngine() {
+      const canvas = document.getElementById('cinema-webgl-canvas');
+      if (!canvas) return;
+
+      const scene = new THREE.Scene();
+      
+      const camera = new THREE.PerspectiveCamera(
+        50, 
+        window.innerWidth / window.innerHeight, 
+        0.1, 
+        2000
+      );
+      camera.position.set(0, 0, 32);
+
+      const renderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        alpha: true,
+        antialias: true,
+        powerPreference: 'high-performance'
+      });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      // Global Scene Master Group (follows scroll & mouse)
+      const sceneGroup = new THREE.Group();
+      scene.add(sceneGroup);
+
+      // 1. FLOATING CYBER CORE (Hero Region)
+      const heroGroup = new THREE.Group();
+      sceneGroup.add(heroGroup);
+      heroGroup.position.set(12, 4, 0);
+
+      // Outer Wireframe Polyhedron
+      const coreGeom = new THREE.IcosahedronGeometry(6.2, 1);
+      const wireMat = new THREE.MeshBasicMaterial({
+        color: 0x38bdf8,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.28
+      });
+      const coreWire = new THREE.Mesh(coreGeom, wireMat);
+      heroGroup.add(coreWire);
+
+      // Inner Glowing Hologram Facets
+      const innerGeom = new THREE.IcosahedronGeometry(5.2, 0);
+      const innerMat = new THREE.MeshBasicMaterial({
+        color: 0x8b5cf6,
+        transparent: true,
+        opacity: 0.14
+      });
+      const innerCore = new THREE.Mesh(innerGeom, innerMat);
+      heroGroup.add(innerCore);
+
+      // Dual Counter-Rotating Orbital Tech Rings
+      const ring1Geom = new THREE.TorusGeometry(8.6, 0.04, 16, 120);
+      const ring1Mat = new THREE.MeshBasicMaterial({ color: 0x06b6d4, transparent: true, opacity: 0.45 });
+      const ring1 = new THREE.Mesh(ring1Geom, ring1Mat);
+      ring1.rotation.x = Math.PI / 3;
+      ring1.rotation.y = Math.PI / 6;
+      heroGroup.add(ring1);
+
+      const ring2Geom = new THREE.TorusGeometry(10.8, 0.03, 16, 120);
+      const ring2Mat = new THREE.MeshBasicMaterial({ color: 0xa855f7, transparent: true, opacity: 0.35 });
+      const ring2 = new THREE.Mesh(ring2Geom, ring2Mat);
+      ring2.rotation.x = -Math.PI / 4;
+      ring2.rotation.y = Math.PI / 4;
+      heroGroup.add(ring2);
+
+      // 2. AMBIENT FLOATING 3D TECH ARTIFACTS (Positioned along scroll depth)
+      const floatingObjects = [];
+
+      // Artifact A: Floating Crystal Octahedron (About/Skills depth)
+      const octGeom = new THREE.OctahedronGeometry(3.5, 0);
+      const octMat = new THREE.MeshBasicMaterial({ color: 0x6366f1, wireframe: true, transparent: true, opacity: 0.25 });
+      const octMesh = new THREE.Mesh(octGeom, octMat);
+      octMesh.position.set(-18, -12, -6);
+      sceneGroup.add(octMesh);
+      floatingObjects.push({ mesh: octMesh, rotX: 0.003, rotY: 0.005, floatSpeed: 0.0015, baseY: -12 });
+
+      // Artifact B: Floating Torus Knot (Projects region)
+      const knotGeom = new THREE.TorusKnotGeometry(3, 0.4, 64, 8, 2, 3);
+      const knotMat = new THREE.MeshBasicMaterial({ color: 0x06b6d4, wireframe: true, transparent: true, opacity: 0.2 });
+      const knotMesh = new THREE.Mesh(knotGeom, knotMat);
+      knotMesh.position.set(18, -28, -10);
+      sceneGroup.add(knotMesh);
+      floatingObjects.push({ mesh: knotMesh, rotX: 0.004, rotY: 0.003, floatSpeed: 0.0012, baseY: -28 });
+
+      // Artifact C: Floating Dodecahedron (Education/Certifications region)
+      const dodecGeom = new THREE.DodecahedronGeometry(3.2, 0);
+      const dodecMat = new THREE.MeshBasicMaterial({ color: 0x8b5cf6, wireframe: true, transparent: true, opacity: 0.22 });
+      const dodecMesh = new THREE.Mesh(dodecGeom, dodecMat);
+      dodecMesh.position.set(-16, -45, -8);
+      sceneGroup.add(dodecMesh);
+      floatingObjects.push({ mesh: dodecMesh, rotX: 0.002, rotY: 0.004, floatSpeed: 0.0018, baseY: -45 });
+
+      // Artifact D: Holographic Telemetry Beacon Sphere (Contact region)
+      const sphereGeom = new THREE.SphereGeometry(3.2, 16, 16);
+      const sphereMat = new THREE.MeshBasicMaterial({ color: 0x10b981, wireframe: true, transparent: true, opacity: 0.2 });
+      const sphereMesh = new THREE.Mesh(sphereGeom, sphereMat);
+      sphereMesh.position.set(14, -62, -5);
+      sceneGroup.add(sphereMesh);
+      floatingObjects.push({ mesh: sphereMesh, rotX: 0.003, rotY: 0.002, floatSpeed: 0.002, baseY: -62 });
+
+      // 3. CINEMATIC VOLUMETRIC LIGHT STREAKS & BEAMS
+      const lightBeams = [];
+      for (let i = 0; i < 4; i++) {
+        const beamGeom = new THREE.CylinderGeometry(0.15, 0.9, 45, 8, 1, true);
+        const beamMat = new THREE.MeshBasicMaterial({
+          color: i % 2 === 0 ? 0x38bdf8 : 0x8b5cf6,
+          transparent: true,
+          opacity: 0.08,
+          blending: THREE.AdditiveBlending,
+          side: THREE.DoubleSide
+        });
+        const beam = new THREE.Mesh(beamGeom, beamMat);
+        beam.position.set(
+          (Math.random() - 0.5) * 50,
+          -i * 20 + (Math.random() - 0.5) * 10,
+          -12 - i * 4
+        );
+        beam.rotation.z = Math.PI / 4 + (Math.random() - 0.5) * 0.4;
+        sceneGroup.add(beam);
+        lightBeams.push(beam);
+      }
+
+      // 4. MULTI-LAYER PARTICLE FIELD WITH DEPTH-OF-FIELD EFFECT
+      // Layer 1: Midground Cosmic Particles
+      const particleCount = 280;
+      const particleGeom = new THREE.BufferGeometry();
+      const positions = new Float32Array(particleCount * 3);
+
+      for (let i = 0; i < particleCount * 3; i += 3) {
+        positions[i] = (Math.random() - 0.5) * 70;
+        positions[i + 1] = (Math.random() - 0.5) * 120;
+        positions[i + 2] = (Math.random() - 0.5) * 45;
+      }
+
+      particleGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      const particleMat = new THREE.PointsMaterial({
+        color: 0x38bdf8,
+        size: 0.16,
+        transparent: true,
+        opacity: 0.55,
+        blending: THREE.AdditiveBlending
+      });
+      const particleField = new THREE.Points(particleGeom, particleMat);
+      sceneGroup.add(particleField);
+
+      // Layer 2: Foreground Luminous Bokeh Particles (Large, soft, slower)
+      const bokehCount = 40;
+      const bokehGeom = new THREE.BufferGeometry();
+      const bokehPositions = new Float32Array(bokehCount * 3);
+
+      for (let i = 0; i < bokehCount * 3; i += 3) {
+        bokehPositions[i] = (Math.random() - 0.5) * 50;
+        bokehPositions[i + 1] = (Math.random() - 0.5) * 90;
+        bokehPositions[i + 2] = 10 + Math.random() * 15;
+      }
+
+      bokehGeom.setAttribute('position', new THREE.BufferAttribute(bokehPositions, 3));
+      const bokehMat = new THREE.PointsMaterial({
+        color: 0x818cf8,
+        size: 0.42,
+        transparent: true,
+        opacity: 0.28,
+        blending: THREE.AdditiveBlending
+      });
+      const bokehField = new THREE.Points(bokehGeom, bokehMat);
+      sceneGroup.add(bokehField);
+
+      // 5. MOUSE & SCROLL SYNCHRONIZATION WITH SLOW-MOTION INERTIA
+      let mouseX = 0;
+      let mouseY = 0;
+      let targetMouseX = 0;
+      let targetMouseY = 0;
+
+      window.addEventListener('mousemove', (e) => {
+        const windowHalfX = window.innerWidth / 2;
+        const windowHalfY = window.innerHeight / 2;
+        mouseX = (e.clientX - windowHalfX) * 0.0004;
+        mouseY = (e.clientY - windowHalfY) * 0.0004;
+      });
+
+      // Track window scroll
+      let scrollY = 0;
+      let targetScrollY = 0;
+
+      window.addEventListener('scroll', () => {
+        scrollY = window.scrollY || document.documentElement.scrollTop;
+      }, { passive: true });
+
+      // Resize Listener
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      // Animation Loop with Cinematic Inertia
+      let clock = new THREE.Clock();
+
+      function animate() {
+        requestAnimationFrame(animate);
+
+        const elapsedTime = clock.getElapsedTime();
+
+        // 1. Core Animations
+        coreWire.rotation.x += 0.0018;
+        coreWire.rotation.y += 0.0028;
+        innerCore.rotation.x -= 0.0025;
+        innerCore.rotation.y -= 0.0018;
+        ring1.rotation.z += 0.0035;
+        ring2.rotation.z -= 0.0028;
+
+        // 2. Floating Objects Drift & Rotation
+        floatingObjects.forEach((obj, idx) => {
+          obj.mesh.rotation.x += obj.rotX;
+          obj.mesh.rotation.y += obj.rotY;
+          obj.mesh.position.y = obj.baseY + Math.sin(elapsedTime * 1.5 + idx) * 1.8;
+        });
+
+        // 3. Volumetric Beams Slow Sway
+        lightBeams.forEach((beam, idx) => {
+          beam.rotation.z += 0.0008 * (idx % 2 === 0 ? 1 : -1);
+          beam.position.x += Math.sin(elapsedTime * 0.8 + idx) * 0.03;
+        });
+
+        // 4. Particle Field Swirl
+        particleField.rotation.y = elapsedTime * 0.02;
+        bokehField.rotation.y = -elapsedTime * 0.015;
+
+        // 5. Smooth Camera Tracking along Scroll
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollFraction = maxScroll > 0 ? (scrollY / maxScroll) : 0;
+        
+        // Map scroll fraction to camera Y position (glides down as user scrolls)
+        const targetCamY = -scrollFraction * 55;
+        targetScrollY += (targetCamY - targetScrollY) * 0.04;
+        camera.position.y = targetScrollY;
+
+        // Responsive positioning of hero group on mobile vs desktop
+        if (window.innerWidth < 1024) {
+          heroGroup.position.set(0, 8, -6);
+        } else {
+          heroGroup.position.set(13, 2, 0);
+        }
+
+        // 6. Smooth Mouse Parallax Lerp
+        targetMouseX += (mouseX - targetMouseX) * 0.04;
+        targetMouseY += (mouseY - targetMouseY) * 0.04;
+        sceneGroup.rotation.y = targetMouseX * 1.2;
+        sceneGroup.rotation.x = targetMouseY * 1.2;
+
+        renderer.render(scene, camera);
+      }
+      animate();
+    })();
+
+    // ----------------------------------------------------
+    // GSAP SCROLLTRIGGER: CINEMATIC REVEALS & VIDEO TRANSITIONS
+    // ----------------------------------------------------
+    (function initCinematicScroll() {
+      // Register GSAP ScrollTrigger if available
+      if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Smooth Section Entrance Reveals with video-like focus transition
+        const sections = document.querySelectorAll('section');
+        sections.forEach((sec) => {
+          gsap.fromTo(sec, 
+            { opacity: 0.15, y: 35, filter: 'blur(3px)' },
+            {
+              opacity: 1,
+              y: 0,
+              filter: 'blur(0px)',
+              duration: 1.1,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: sec,
+                start: 'top 85%',
+                end: 'top 45%',
+                toggleActions: 'play none none reverse'
+              }
+            }
+          );
+        });
+
+        // Project Cards Cinematic Stagger
+        ScrollTrigger.batch('.project-card', {
+          start: 'top 88%',
+          onEnter: (batch) => {
+            gsap.fromTo(batch, 
+              { opacity: 0, y: 25, scale: 0.98 },
+              { opacity: 1, y: 0, scale: 1, duration: 0.8, stagger: 0.15, ease: 'power2.out' }
+            );
+          }
+        });
+
+        // Skill Cards Stagger
+        ScrollTrigger.batch('.skill-item', {
+          start: 'top 90%',
+          onEnter: (batch) => {
+            gsap.fromTo(batch, 
+              { opacity: 0, y: 20 },
+              { opacity: 1, y: 0, duration: 0.6, stagger: 0.08, ease: 'power2.out' }
+            );
+          }
+        });
+      } else {
+        // Fallback smooth intersection observer
+        const revealElements = document.querySelectorAll('.cinema-reveal');
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('revealed');
+            }
+          });
+        }, { threshold: 0.1 });
+
+        revealElements.forEach(el => observer.observe(el));
+      }
+    })();
+
+    // ----------------------------------------------------
+    // RESUME MANAGER (LOCAL STORAGE & LINK CUSTOMIZER)
+    // ----------------------------------------------------
+    const resumeModal = document.getElementById('resume-manager-modal');
+    const DEFAULT_RESUME = 'assets/dillu_resume.pdf';
+
+    function initActiveResume() {
+      const savedResume = localStorage.getItem('dillu_custom_resume');
+      const activeUrl = savedResume || DEFAULT_RESUME;
+
+      const navBtn = document.getElementById('nav-resume-btn');
+      const heroBtn = document.getElementById('hero-resume-btn');
+      const mobileBtn = document.getElementById('mobile-resume-btn');
+      const testView = document.getElementById('test-view-resume');
+      const displaySpan = document.getElementById('current-resume-display');
+
+      if (navBtn) navBtn.href = activeUrl;
+      if (heroBtn) heroBtn.href = activeUrl;
+      if (mobileBtn) mobileBtn.href = activeUrl;
+      if (testView) testView.href = activeUrl;
+
+      if (displaySpan) {
+        if (savedResume) {
+          displaySpan.textContent = savedResume.startsWith('data:') 
+            ? 'Custom Uploaded PDF (In-Browser)' 
+            : savedResume;
+          displaySpan.className = 'font-mono text-xs text-purple-400 font-semibold truncate block max-w-xs';
+        } else {
+          displaySpan.textContent = 'assets/dillu_resume.pdf (Original)';
+          displaySpan.className = 'font-mono text-xs text-emerald-400 font-semibold truncate block max-w-xs';
+        }
+      }
+    }
+
+    function openResumeManager() {
+      if (resumeModal) {
+        resumeModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeResumeManager() {
+      if (resumeModal) {
+        resumeModal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+      }
+    }
+
+    function showResumeMsg(msg, isSuccess = true) {
+      const msgBox = document.getElementById('resume-manager-msg');
+      if (msgBox) {
+        msgBox.classList.remove('hidden');
+        msgBox.className = `p-3 rounded-xl text-xs font-mono text-center ${isSuccess ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30' : 'bg-red-500/10 text-red-400 border border-red-500/30'}`;
+        msgBox.textContent = msg;
+        setTimeout(() => msgBox.classList.add('hidden'), 4000);
+      }
+    }
+
+    function saveCustomResumeUrl() {
+      const input = document.getElementById('custom-resume-url');
+      if (input && input.value.trim()) {
+        const url = input.value.trim();
+        localStorage.setItem('dillu_custom_resume', url);
+        initActiveResume();
+        showResumeMsg('✓ Custom resume URL successfully applied and active!');
+        input.value = '';
+      } else {
+        showResumeMsg('Please enter a valid URL first.', false);
+      }
+    }
+
+    function handleResumeFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      if (file.type !== 'application/pdf') {
+        showResumeMsg('Please select a valid PDF file.', false);
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const dataUrl = e.target.result;
+        try {
+          localStorage.setItem('dillu_custom_resume', dataUrl);
+          initActiveResume();
+          showResumeMsg(`✓ New resume PDF "${file.name}" saved and active!`);
+        } catch (err) {
+          showResumeMsg('File too large for browser storage. Please use Option 1 (Cloud Link) or replace assets/dillu_resume.pdf.', false);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function resetDefaultResume() {
+      localStorage.removeItem('dillu_custom_resume');
+      initActiveResume();
+      showResumeMsg('✓ Reset to default verified resume (assets/dillu_resume.pdf)!');
+    }
+
+    if (resumeModal) {
+      resumeModal.addEventListener('click', (e) => {
+        if (e.target === resumeModal) closeResumeManager();
+      });
+    }
+
+    initActiveResume();
+
+    // ----------------------------------------------------
+    // MOBILE NAVIGATION DRAWER
+    // ----------------------------------------------------
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+
+    if (mobileMenuBtn && mobileMenu) {
+      mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+
+      mobileLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.add('hidden');
+        });
+      });
+    }
+
+    // ----------------------------------------------------
+    // SKILLS CATEGORY FILTER
+    // ----------------------------------------------------
+    const skillFilterBtns = document.querySelectorAll('.skill-filter-btn');
+    const skillItems = document.querySelectorAll('.skill-item');
+
+    skillFilterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        skillFilterBtns.forEach(b => {
+          b.classList.remove('bg-sky-500', 'text-black', 'shadow-sky-500/20');
+          b.classList.add('bg-slate-900', 'text-slate-300', 'border-slate-800');
+        });
+        btn.classList.remove('bg-slate-900', 'text-slate-300', 'border-slate-800');
+        btn.classList.add('bg-sky-500', 'text-black', 'shadow-sky-500/20');
+
+        const filter = btn.getAttribute('data-category');
+        skillItems.forEach(item => {
+          if (filter === 'all' || item.getAttribute('data-category') === filter) {
+            item.style.display = 'flex';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // ----------------------------------------------------
+    // PROJECT FILTER
+    // ----------------------------------------------------
+    const projectFilterBtns = document.querySelectorAll('.project-filter-btn');
+    const projectCards = document.querySelectorAll('.project-card');
+
+    projectFilterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        projectFilterBtns.forEach(b => {
+          b.classList.remove('bg-cyan-500', 'text-black', 'shadow-cyan-500/20');
+          b.classList.add('bg-slate-900', 'text-slate-300', 'border-slate-800');
+        });
+        btn.classList.remove('bg-slate-900', 'text-slate-300', 'border-slate-800');
+        btn.classList.add('bg-cyan-500', 'text-black', 'shadow-cyan-500/20');
+
+        const filter = btn.getAttribute('data-category');
+        projectCards.forEach(card => {
+          if (filter === 'all' || card.getAttribute('data-category') === filter) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // ----------------------------------------------------
+    // PROJECT MODAL INSPECTOR
+    // ----------------------------------------------------
+    const projectModal = document.getElementById('project-modal');
+
+    function openProjectModal(projectId) {
+      if (!projectModal) return;
+      projectModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeProjectModal() {
+      if (!projectModal) return;
+      projectModal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
+    function setModalImg(src) {
+      const modalImg = document.getElementById('modal-img');
+      if (modalImg) modalImg.src = src;
+    }
+
+    if (projectModal) {
+      projectModal.addEventListener('click', (e) => {
+        if (e.target === projectModal) closeProjectModal();
+      });
+    }
+
+    // ----------------------------------------------------
+    // CONTACT FORM & EMAIL COPY
+    // ----------------------------------------------------
+    const contactForm = document.getElementById('contact-form');
+    const formFeedback = document.getElementById('form-feedback');
+
+    if (contactForm) {
+      contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const subject = document.getElementById('subject').value;
+        const message = document.getElementById('message').value;
+
+        const mailtoUrl = `mailto:katayandillu@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent("Sender Name: " + name + "\nSender Email: " + email + "\n\n" + message)}`;
+        window.location.href = mailtoUrl;
+
+        if (formFeedback) {
+          formFeedback.classList.remove('hidden');
+          formFeedback.className = 'p-4 rounded-xl text-xs font-mono text-center bg-emerald-500/10 text-emerald-400 border border-emerald-500/30';
+          formFeedback.innerHTML = `✓ Preparing your email client to transmit message to <strong>katayandillu@gmail.com</strong>!`;
+        }
+      });
+    }
+
+    function copyEmail() {
+      navigator.clipboard.writeText('katayandillu@gmail.com').then(() => {
+        const copyText = document.getElementById('copy-text');
+        if (copyText) {
+          const original = copyText.textContent;
+          copyText.textContent = 'Email Copied to Clipboard!';
+          setTimeout(() => {
+            copyText.textContent = original;
+          }, 3000);
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
